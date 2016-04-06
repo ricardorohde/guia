@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<?= $this->data['pagina']->{'pagina_meta_desc'} ?>">
+    <meta name="keywords" content="<?= $this->data['pagina']->{'pagina_meta_keywords'} ?>">
+    <meta name="author" content="{SITE_AUTOR}">
+    <title><?php if (isset($this->data['pagina']->{'pagina_nome'})): ?><?= $this->data['pagina']->{'area_nome'} ?> - <?= $this->data['pagina']->{'pagina_nome'} ?><?php endif; ?> | {SITE_TITLE}</title>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+    <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel='stylesheet' type='text/css' href="{SITE_TEMPLATE}/css/main.css?v=<?=date('dmyhis')?>">
+    <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+    <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<?php require_once 'top_bar.phtml'; ?>
+<?php require_once 'top_menu.phtml'; ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <?php require_once 'top_busca.phtml'; ?>
+            <div class="main_content">
+                <br/>
+                <?php if (isset($this->data['pagina']->{'pagina_nome'})): ?>
+                    <h4 class="no-margin-t"><?= $this->data['pagina']->{'pagina_nome'} ?></h4>
+                    <?= $this->data['pagina']->{'pagina_texto'} ?>
+                <?php elseif (isset($this->data['pagina'][0])): ?>
+                    <?php foreach ($this->data['pagina'] as $s): ?>
+                        <a class="link"
+                           href="{SITE_BASEURI}/pagina/<?= $s->area_url ?>/<?= $s->pagina_url ?>/<?= $s->pagina_id ?>/"><?= $s->pagina_nome ?></a>
+                        <br/>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <div class="row text-center">
+                    <?= $this->data['paginacao']; ?>
+                </div>
+
+            </div>
+        </div>
+        <?php require_once 'right_bar.phtml'; ?>
+    </div>
+</div>
+<?php require_once 'rodape.phtml'; ?>
+<script type="text/javascript">
+    $(function () {
+        $('#url-area-<?= $this->data['pagina']->{'pagina_area'} ?>').addClass('active');
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+</body>
+</html>

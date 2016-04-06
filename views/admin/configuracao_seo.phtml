@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">        
+        <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">      
+        <link href="assets/vendor/fakeinput/fakeinput.css" rel="stylesheet" type="text/css">      
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-search"></i> &nbsp; Configuração de SEO &nbsp;
+                            <span id="hsp_produto_nome" class="hide">
+                                <i class="fa fa-angle-right"></i> 
+                            </span>
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i> 
+                            Otimização para Mecanismos de Busca (Google)
+                            <span class="pull-right">
+                                <a href="http://pt.wikipedia.org/wiki/Otimiza%C3%A7%C3%A3o_para_motores_de_busca" target="new">
+                                    <i class="fa fa-external-link"></i> referência externa
+                                </a>
+                            </span>
+                        </small>
+                    </p>  
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <form action="{BASEURI}/painel/configuracao/seo/atualizar/" method="post"
+                                  role="form" id="form-seo">
+
+                                <p class="alert alert-block alert-custom">
+                                    <i class="fa fa-line-chart"></i>
+                                    Opções de SEO
+                                </p>
+
+                                <div class="well well-sm">
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Meta Title</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Define o título exibido no site e resultados de buscas</small>                                        
+                                        <input type="text" name="site_meta_title" id="site_meta_title" value="<?= $this->site->getMetaTitle() ?>"
+                                               class="form-control" placeholder="Informe o meta title do site" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Meta Description</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Define a descrição exibida nos resultados de buscas</small>                                        
+                                        <input type="text" name="site_meta_desc" id="site_meta_desc" value="<?= $this->site->getMetaDescription() ?>"
+                                               class="form-control" placeholder="Informe o meta description do site" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Meta Keywords</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Define as palavras-chave para identificar o site nos resultados de buscas</small>                                        
+                                        <input type="text" name="site_meta_keywords" id="site_meta_keywords" value="<?= $this->site->getMetaKeyWords() ?>"
+                                               class="form-control" placeholder="Informe as palavras-chave do site" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Meta Author</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Define o nome do Autor exibido no site</small>                                        
+                                        <input type="text" name="site_meta_autor" id="site_meta_autor" value="<?= $this->site->getMetaAuthor() ?>"
+                                               class="form-control" placeholder="Informe o meta autor" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Código do Google Analytics</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Informe o código Analytics (ex: UA-123456-7)</small>                                        
+                                        <input type="text" name="site_google_analytics" id="site_google_analytics" value="<?= $this->site->getGoogleAnalytics() ?>"
+                                               class="form-control" placeholder="Informe o código do google analytics ex: UA-123456-7" />
+                                    </div>
+                                </div>
+
+                                <p class="text-center">
+                                    <button type="submit" class="btn btn-primary" id="btn-add-update"><i class="fa fa-refresh"></i>
+                                        <span>Atualizar Configurações</span></button>
+                                </p>
+                            </form>                                
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="assets/vendor/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/js/admin/main.js"></script>
+        <script type="text/javascript" src="assets/vendor/notify/js/notifIt.js"></script>
+        <script type="text/javascript" src="assets/js/admin/configuracao_seo.js"></script>       
+        <!--controller actions -->
+        <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>		
+        <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

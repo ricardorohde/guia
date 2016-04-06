@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">      
+        <link href="assets/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" type="text/css">      
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+
+                <div class="panel panel-primary">            
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-file-text"></i> &nbsp; Conteúdo  &nbsp;
+                            <i class="fa fa-angle-right"></i> Gerenciar Áreas 
+                        </h5>
+                    </div>
+
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i>
+                            Controle os itens do menu do topo e rodapé do site.
+                            <br />
+                            <i class="fa fa-exclamation-circle"></i>
+                            Após cadastrar uma área, informe onde ela pode aparecer. Você pode distribuir os itens entre os 2 locais!
+                            <br />
+                            <i class="fa fa-arrows"></i> 
+                            Você pode alterar a ordem de exibição dos itens arrando-os nas posições desejadas!                            
+                        </small>
+                    </p>                      
+                    <div class="panel-body">
+                        <p class="text-right">
+                            <a href="#lista" role="tab" data-toggle="tab" id="a-tab-lista" class="btn btn-primary hide">
+                                <i class="fa fa-bars"></i>  Listar Áreas
+                            </a>
+                            <a href="#novo" role="tab" data-toggle="tab" id="a-tab-edit" class="btn btn-primary"> 
+                                <i class="fa fa-plus-circle"></i> Nova Área
+                            </a>                            
+                        </p>                        
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="lista">
+                                <?php if (is_array($this->data)): ?>
+                                    <table class="table table-striped" id="table-list">
+                                        <thead>
+                                            <tr>
+                                                <th width="60">ID</th>
+                                                <th>Nome da Área</th>
+                                                <th>Exibir no Topo</th>
+                                                <th>Exibir no Rodapé</th>
+                                                <th width="110"><i class="fa fa-cog"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="dragger">
+                                            <?php foreach ($this->data as $p): ?>
+                                                <tr id="li_<?= $p->area_id; ?>">
+                                                    <td class="td-id"><?= $p->area_id; ?></td>
+                                                    <td class="td-nome"><?= $p->area_nome; ?></td>
+                                                    <td class="td-ctrl">
+                                                        <input type="checkbox" 
+                                                               class="area_show"
+                                                               title="Exibir no Menu?"
+                                                               name="area_show"
+                                                               data-size="small"
+                                                               data-label-text="<i class='fa fa-th-large'></i>"
+                                                               data-on-text="SIM" 
+                                                               data-off-text="NÃO"
+                                                               id="<?= $p->area_id; ?>"
+                                                               value="<?= $p->area_show; ?>"
+                                                               checked />                                                        
+                                                    </td>
+                                                    <td class="td-ctrl">
+                                                        <input type="checkbox" 
+                                                               class="area_footer"
+                                                               title="Exibir no Rodapé?"
+                                                               name="area_footer"
+                                                               data-size="small"
+                                                               data-label-text="<i class='fa fa-th-large'></i>"
+                                                               data-on-text="SIM" 
+                                                               data-off-text="NÃO"
+                                                               id="<?= $p->area_id; ?>"
+                                                               value="<?= $p->area_footer; ?>"
+                                                               checked />                                                        
+                                                    </td>
+                                                    <td class="td-ctrl">
+                                                        <button type="button" class="btn btn-primary btn-sm tip btn-edit" id="<?= $p->area_id; ?>" name="<?= $p->area_nome; ?>"  data-show="<?= $p->area_show; ?>" title="editar"><i class="fa fa-edit"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm tip btn-remove" title="remover" id="<?= $p->area_id; ?>"><i class="fa fa-trash-o"></i></button>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>                          
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center">
+                                        {PAGINACAO}
+                                    </div>
+
+                                <?php else: ?>                          
+                                    <p class="well well-sm">
+                                        <i class="fa fa-info-circle"></i> 
+                                        Você ainda não cadastrou nenhuma área!
+                                    </p>
+                                <?php endif; ?>                          
+                            </div>
+                            <div class="tab-pane fade" id="novo">
+                                <form action="{BASEURI}/painel/area/atualizar/" 
+                                      class="form-inline" role="form"
+                                      method="post" id="form-area">
+
+                                    <div class="well well-sm">
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">&nbsp;</label>                                         
+                                            <input type="text" name="area_nome" id="area_nome" class="form-control" placeholder="Informe o nome da área"  style="min-width: 400px"/>
+                                            <input type="hidden" name="area_id" id="area_id"  />
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" id="btn-add-update"><i class="fa fa-check-circle-o"></i> <span>Cadastrar</span></button>
+                                        <button type="button" class="btn btn-danger" id="btn-add-update-cancel"><i class="fa fa-times-circle-o"></i> Cancelar</button>
+                                    </div>
+                                </form>                                
+                            </div>                
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="ModalRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Remover Área</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Atenção!</h4>
+                        <p>
+                            Você está prestes à excluir um registro de forma permanente.<br />
+                            Deseja realmente executar este procedimento?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle-o"></i> Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btn-confirm-remove"><i class="fa fa-check-circle-o"></i> Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="assets/vendor/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/jquery-ui.min.js"></script>        
+        <script type="text/javascript" src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/js/admin/main.js"></script>
+        <script type="text/javascript" src="assets/js/admin/area.js"></script>
+        <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>
+        <script src="assets/vendor/notify/js/notifIt.js" type="text/javascript"></script>
+
+        <script type="text/javascript" src="assets/vendor/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('#a-tab-lista').tab('show');
+                $(".area_show").each(function () {
+                    if ($(this).val() >= 1) {
+                        $(this).bootstrapSwitch('state', true, true);
+                    }
+                    else {
+                        $(this).bootstrapSwitch('state', false, false);
+                    }
+                    $(this).bootstrapSwitch('onSwitchChange', function () {
+                        var area_id = $(this).attr('id');
+                        var area_show = $(this).bootstrapSwitch('state');
+                        if (area_show) {
+                            area_show = 1;
+                        } else {
+                            area_show = 0;
+                        }
+                        var url = baseUri + '/painel/area/exibicao/'
+                        $.post(url, {area_id: area_id, area_show: area_show}, function (data) {
+                            _alert_info('<p><i class="glyphicon glyphicon-ok-circle"></i> Opção de exibição do menu atualizada</p>', 'center')
+                        })
+                    });
+                })
+                $(".area_footer").each(function () {
+                    if ($(this).val() >= 1) {
+                        $(this).bootstrapSwitch('state', true, true);
+                    }
+                    else {
+                        $(this).bootstrapSwitch('state', false, false);
+                    }
+                    $(this).bootstrapSwitch('onSwitchChange', function () {
+                        var area_id = $(this).attr('id');
+                        var area_footer = $(this).bootstrapSwitch('state');
+                        if (area_footer) {
+                            area_footer = 1;
+                        } else {
+                            area_footer = 0;
+                        }
+                        var url = baseUri + '/painel/area/exibicao_footer/'
+                        $.post(url, {area_id: area_id, area_footer: area_footer}, function (data) {
+                            _alert_info('<p><i class="glyphicon glyphicon-ok-circle"></i> Opção de exibição do menu atualizada</p>', 'center')
+                        })
+                    });
+                })
+            })
+        </script>          
+        <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

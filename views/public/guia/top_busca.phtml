@@ -1,0 +1,18 @@
+<form class="search_top_form form-inline" role="form" action="{BASEURI}/encontre/" method="post">
+    <div class="col-md-9 col-sm-9">
+        <p class="text-left" style="font-size: 15px">
+            <b>Exemplos de buscas eficientes: </b>
+            Pizzaria em Natal ou
+            Pousada em Macaíba
+        </p>
+        <input type="text" class="form-control" value="<?= (isset($_SESSION['__TERMOS__'])) ?  $_SESSION['__TERMOS__'] : '' ?>" name="termos" required
+               placeholder="Encontre por empresa, produto, serviço... ex: drogaria em macaíba">
+    </div>
+
+    <div class="col-md-3 col-sm-3">
+        <p class="text-left">&nbsp;</p>
+        <button class="btn btn-primary text-uppercase">
+            <span class="fa fa-search"></span> Buscar no site
+        </button>
+    </div>
+</form>

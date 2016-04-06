@@ -1,0 +1,102 @@
+
+.menu-left .panel{
+    margin:0px !important;
+    margin-bottom:1px !important;
+}
+.menu-left .panel-body{
+    margin:0px !important;
+    padding: 0px !important;
+}
+.text-upper{
+    text-transform: uppercase;
+    text-decoration: none !important;
+    font-size: 13px;
+}
+.text-upper i{
+    margin-right: 4px !important;
+}
+
+.menu-left {
+    border:0px !important;
+    background: #2D3A42;  
+    height: 100%;
+}
+
+.menu-left i{
+    font-size: 17px !important;
+}
+.menu-left .panel-custom{
+    background: #2D3A42;   
+    color:#B8BEC1;
+}
+
+.menu-left .panel-custom .panel-body a{
+    color:#B8BEC1;
+}
+.menu-left .panel-custom *{
+    border:0px !important;
+}
+
+.menu-left .panel-custom .panel-body a{
+    border-left: 3px solid  #2D3A42 !important; 
+}
+
+.menu-left .panel-custom .panel-body a:hover{
+    background: #3A4B55;   
+    border-left: 3px solid #428BCA !important; 
+}
+
+.menu-left .panel-custom .panel-heading{
+    border-left: 3px solid #3A4B55 !important;   
+}
+.menu-left .panel-custom .panel-heading:hover{
+    border-left: 3px solid #428BCA !important;   
+}
+.menu-left .panel-custom .panel-heading.active{
+    background: #428BCA;   
+    border-left: 3px solid #428BCA !important; 
+    color:#fff;
+}
+.menu-left .panel-custom .panel-body .active{
+    border-left: 3px solid #428BCA !important;   
+    opacity:.8;
+}
+.menu-left .panel-custom i{
+    margin-right: 6px;
+}
+.menu-left .panel-custom .panel-heading{
+    background: #3A4B55;   
+}
+.menu-left .panel-custom .panel-title a{
+    border: 0px solid red !important; 
+    display: block !important; 
+    width: 100% !important; 
+    padding: 2px !important; 
+}
+/*
+.menu-left .panel-heading a{
+    font-size: 14px;
+}
+*/
+#panel-content .panel-custom{
+    border-top:1px solid #3A4B55 !important;
+    border-left:0px solid #3A4B55 !important;
+}
+#panel-content .panel-heading{
+    background: #fff;   
+    color:#333;
+    font-size: 18px !important;
+    /*border-left:1px solid #3A4B55 !important;*/
+}
+#panel-content .panel-heading h3{
+    font-size: 20px !important;
+    line-height: 20px !important;
+    color:#333;
+    /*border-left:1px solid #3A4B55 !important;*/
+}
+#side-bar{
+    background: #2D3A42;
+}
+.navbar-inverse{
+    background: #428BCA !important;
+}

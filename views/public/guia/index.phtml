@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="keywords" content="{SITE_KEYWORDS}">
+        <meta name="author" content="{SITE_AUTOR}">
+        <title>{SITE_TITLE} - {SITE_SLOGAN}</title>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+        <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">
+        <link rel='stylesheet' type='text/css' href="{SITE_TEMPLATE}/css/main.css?v=<?= date('dmyhis') ?>">
+        <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+        <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+        <script src="{SITE_TEMPLATE}/js/owl.carousel.min.js"></script>
+
+        <!-- Zima Cagando -->
+        <!-- <script src="{SITE_TEMPLATE}/js/FiltroHomeSearch.js" ></script> -->
+        <!-- Zima Cagando -->
+
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <?php require_once 'top_bar.phtml'; ?>
+        <?php require_once 'top_menu.phtml'; ?>
+        <?php require_once 'mapa.html' ?>;
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <?php require_once 'top_busca.phtml'; ?>
+                    <div class="main_content">
+
+
+                        <br/>
+                        <?php if ($this->slide_view == 1): ?>
+                            <div id="slide-top" class="myCarousel carousel slide home">
+                                <div class="carousel-inner">
+                                    <?php if ($this->isMod('slideshow')): ?>
+                                        <?php $k = 0; ?>
+                                        <?php foreach ($this->modulo['slideshow']['data'] as $s): ?>
+                                            <?php if (file_exists("midia/slide/$s->slide_url")): ?>
+                                                <div class="item <?= ($k == 0) ? 'active' : '' ?>">
+                                                    <img src="midia/slide/<?= $s->slide_url ?>"
+                                                         style="width:100%; max-height: 270px;" class="img-responsive"/>
+                                                    <div class="carousel-caption">
+                                                        <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                                            <a href="<?= Filter::trim_str($s->slide_link) ?>">
+                                                            <?php endif; ?>
+                                                            <?php if ($s->slide_titulo != ""): ?>
+                                                                <h4><?= $s->slide_titulo ?></h4>
+                                                            <?php endif; ?>
+                                                            <?php if ($s->slide_msg != ""): ?>
+                                                                <p class="lead hidden-xs"><?= Filter:: cut($s->slide_msg, 100, '...') ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                                                <?php if ($s->slide_titulo == "" && $s->slide_msg == ""): ?>
+                                                                    <?= $this->modulo['slideshow']['config']->{'btn-link'} ?>
+                                                                <?php endif; ?>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <?php $k++; ?>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <a class="left carousel-control" href="#slide-top" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#slide-top" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <h3 class="title">
+                            <span class="pull-left text-uppercase">Veja quem está no {SITE_TITLE}</span>
+                            <span class="pull-right"><a href="{BASEURI}/cadastro/" style="font-size: 15px;color:#428BCA"><b>Cadastre-se
+                                        e apareça também</b></a></span>
+                        </h3>
+
+                        <div class="row">
+                            <div class="form-groups product_listing">
+                                <?php if ($this->isMod('cliente')): ?>
+                                    <?php if (isset($this->modulo['cliente']['data-home'])): ?>
+                                        <?php foreach ($this->modulo['cliente']['data-home'] as $s): ?>
+                                            <div class="col-md-4 col-sm-12">
+                                                <div class="item"
+                                                     style="margin-bottom: 25px;border-bottom:1px solid #dcdcdc"
+                                                     data-placement="bottom"
+                                                     title="<?= $s->cliente_empresa ?> - <?= $s->cliente_nome ?>">
+                                                    <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/">
+                                                        <img
+                                                            src="{SITE_BASEURI}/thumb.php?zc=0&h=200&w=250&src=<?= Imagem:: get("midia/cliente", "$s->cliente_logo") ?>"
+                                                            alt="" class="img-thumbnail img-responsive">
+                                                    </a>
+                                                    <div style="min-height: 60px !important;">
+                                                        <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/"
+                                                           class="title"><?= $s->cliente_empresa ?></a><br/>
+                                                        <a href="{SITE_BASEURI}/encontre/em/<?= $s->grupo_url ?>/"
+                                                           class="subinfo"><?= $s->grupo_nome ?></a>
+                                                    </div>
+                                                    <div style="min-height: 55px !important;">
+                                                        <?= Filter::cut($s->cliente_info, 90, '...') ?> <br/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <h3 class="title"><span class="pull-left">NOVOS NO SITE</span>
+                            <span class="pull-right"><a href="{SITE_BASEURI}/categorias/">Ver todos</a></span></h3>
+
+                        <div class="row">
+                            <div class="span12 product_listing">
+                                <div id="owl-carousel" class="owl-carousel">
+                                    <?php if ($this->isMod('cliente')): ?>
+                                        <?php if (isset($this->modulo['cliente']['data-last'])): ?>
+                                            <?php foreach ($this->modulo['cliente']['data-last'] as $s): ?>
+                                                <div class="col-md-12">
+                                                    <div class="item">
+                                                        <span class="btn-block text-right"><span class="label label-success">novo</span></span>
+                                                        <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/">
+                                                            <img
+                                                                src="{SITE_BASEURI}/thumb.php?zc=0&h=200&w=250&src=<?= Imagem:: get("midia/cliente", "$s->cliente_logo") ?>"
+                                                                alt="" class="img-thumbnail img-responsive">
+                                                        </a>
+                                                        <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/"
+                                                           class="title"><?= $s->cliente_empresa ?></a><br/>
+                                                        <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/"
+                                                           class="subinfo"><?= $s->grupo_nome ?></a>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="title"><span class="pull-left text-uppercase">ṹltimas notícias</span><span
+                                class="pull-right"><a href="{SITE_BASEURI}/noticia/">Ver todas as notícias</a></span></h3>
+
+                        <div class="row">
+                            <div class="col-md-7">
+                                <?php if (isset($this->modulo['noticia']['data'][0])): ?>
+                                    <?php $k = 0; ?>
+                                    <?php foreach ($this->modulo['noticia']['data'] as $s): ?>
+                                        <?php if ($k <= 1) : ?>
+                                            <div class="featured-item">
+                                                <a href="{SITE_BASEURI}/noticia/<?= (isset($s->ncategoria_url)) ? "$s->ncategoria_url/$s->noticia_url" : "geral/$s->noticia_url" ?>/<?= $s->noticia_id ?>/">
+                                                    <img
+                                                        src="{SITE_BASEURI}/thumb.php?w=152&h=85&src=<?= Imagem:: get("midia/news", "$s->noticia_capa") ?>"
+                                                        class="img pull-left" width="152" height="85" alt=""/>
+                                                </a>
+                                                <strong><a href="{SITE_BASEURI}/noticia/<?= (isset($s->ncategoria_url)) ? "$s->ncategoria_url/$s->noticia_url" : "geral/$s->noticia_url" ?>/<?= $s->noticia_id ?>/"><?= $s->noticia_titulo ?> </a></strong>
+
+                                                <p><?= $s->noticia_data ?></p>
+
+                                                <p><?= Filter::cut($s->noticia_texto, 90, '...') ?> </p>
+                                            </div>
+                                            <?php $k++; ?>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="other_info">
+                                    <?php if (isset($this->modulo['noticia']['data'])): ?>
+                                        <?php $this->modulo['noticia']['data'] = array_slice($this->modulo['noticia']['data'], 2, count($this->modulo['noticia']['data'])) ?>
+                                        <?php if (isset($this->modulo['noticia']['data'][0])): ?>
+                                            <?php foreach ($this->modulo['noticia']['data'] as $s): ?>
+                                                <?php //if ($k > 1) : ?>
+                                                <p>
+                                                    <strong><a href="{SITE_BASEURI}/noticia/<?= (isset($s->ncategoria_url)) ? "$s->ncategoria_url/$s->noticia_url" : "geral/$s->noticia_url" ?>/<?= $s->noticia_id ?>/"><?= $s->noticia_titulo ?> </a></strong> <br/>
+                                                    <?= $s->noticia_data ?>
+                                                </p>
+                                                <?php $k++; ?>
+                                                <?php //endif; ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Zima Cagando -->
+                        <div class="row">
+                            <div class="col-md-7">
+                                <?php if (isset($this->modulo['filtrohome']['filtrohome-data'])){
+                                    foreach ($this->modulo['filtrohome']['filtrohome-data'] as $myFilter){
+
+                                          $value = $myFilter->grupo_id; //propriedade value do input
+                                          $name = $myFilter->grupo_url; //propriedade name do input
+                                          $id = $myFilter->grupo_url; //propriedade id do input
+                                          $description = substr($myFilter->grupo_nome,0,30); //label do input
+                                          $checked = "checked"; //default todos os checkboxs checados
+                                          $searchClass = "filtrohome-search-class"; // para pegar todos os inputs via jQuery com essa classe
+                                          // e passar como parâmetro pro método AJAX que faz a filtragem
+                                          $onClickListener = "doFiltroHomeSearch()"; // FiltroHomeSearch.js
+
+                                          // monta o input HTML baseado no retorno do banco
+                                          $input = "<input type='checkbox' ";
+                                          $input.= " name='$name' ";
+                                          $input.= " id='$id' ";
+                                          //$input.= " checked='$checked' ";
+                                          $input.= " class='filtrohome-search-class' ";
+                                          $input.= " onclick='$onClickListener' ";
+                                          $input.= " value='$value'/>";
+                                          $input.= " $description ";
+                                          $input.= " <br>";
+                                          //$input.= "</input>";
+
+                                          // joga na tela
+                                          echo $input;
+                                    }
+                                } ?>
+                            </div>
+                        </div>
+                        <!-- Zima Cagando -->
+
+                    </div>
+                </div>
+                <?php require_once 'right_bar.phtml'; ?>
+            </div>
+        </div>
+        <?php require_once 'rodape.phtml'; ?>
+
+        <script>
+            if ($('.carousel').length >= 1) {
+                $('.carousel').carousel({
+                    interval: 2000
+                });
+            }
+            $("#owl-carousel").owlCarousel({
+                autoPlay: 3000, //Set AutoPlay to 3 seconds
+                items: 4,
+                pagination: true
+            });
+            $(function () {
+                $('#top-menu-home').addClass('active');
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+            /*Zima Cagando*/
+        </script>
+    </body>
+</html>

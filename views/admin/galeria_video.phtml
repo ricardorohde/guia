@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">        
+        <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">   
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-picture-o"></i> Mídias 
+                            <i class="fa fa-angle-right"></i> Galerias
+                            <i class="fa fa-angle-right"></i> {GALERIA_NOME}
+                            <i class="fa fa-angle-right"></i> Vídeos
+                        </h5>
+                    </div>
+                    <div class="panel-body">
+                        <ol class="breadcrumb">
+                            <li><a href="{BASEURI}/painel/">Home</a></li>
+                            <li><a href="{BASEURI}/painel/galeria/">Galerias</a></li>
+                            <li class="active">{GALERIA_NOME}</li>
+                            <li class="active">Vídeos</li>
+                        </ol>
+                        <div class="well well-sm">
+                            <div class="row">
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <form action="{BASEURI}/painel/galeria/incluirVideo/" role="form"
+                                          method="post" id="form-categoria">
+                                        <div class="row">
+                                            <div class="col-md-8 col-sm-8 col-xs-7">
+                                                <input type="text" name="video_url" id="video_url" class="form-control" required 
+                                                       placeholder="Informe o link do video (Youtube / Vimeo)" />
+                                                <input type="hidden" name="video_id" id="video_id"  />
+                                                <input type="hidden" name="video_galeria" id="video_galeria" value="{GALERIA_ID}"  />
+                                            </div>
+                                            <div class="col-md-2 col-xs-4 col-sm-2">
+                                                <button type="submit" class="btn btn-primary" id="btn-add-update"><i class="fa fa-plus-circle"></i> <span>Cadastrar</span></button>
+                                            </div>
+                                        </div>
+                                    </form>  
+                                </div>
+                                <div class="col-md-2 col-xs-12 col-sm-2">
+                                    <div class="div-btn-remove-xs hidden-xs">
+                                        <div class="row visible-xs">&nbsp;</div>
+                                        <button id="btn-remove-selecao" class="btn btn-danger" type="button"> 
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active galeria-foto-thumb">                                
+                                <div class="dragger_video col-md-12">
+                                    <p> </p>
+                                    <?php if (is_array($this->videos)): ?>  
+                                        <?php foreach ($this->videos as $v): ?>
+                                            <div class="col-md-2" id="d_<?= $v->video_id; ?>">
+                                                <div class="thumbnail">
+                                                    <?php
+                                                    $this->galeria->video_id = $v->video_id;
+                                                    $this->galeria->getVideo();
+                                                    ?>
+                                                    <?= $this->galeria->getVideoThumb(); ?>
+                                                    <div class="caption">
+                                                        <p align="center">
+                                                            <span class="button-checkbox">
+                                                                <button type="button" class="btn btn-sm btn-danger btn-video-remove" data-color="danger"><i class="fa fa-trash-o"></i></button>
+                                                                <input type="checkbox" name="video_id_drop[]" value="<?= $v->video_id; ?>" class="hidden checkbox-remove" />
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <div class="text-center">
+                                        {PAGINACAO}
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="ModalRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Remover Vídeos</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Atenção!</h4>
+                        <p>
+                            Você está prestes à excluir um registro de forma permanente.<br />
+                            Deseja realmente executar este procedimento?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle-o"></i> Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btn-confirm-remove"><i class="fa fa-check-circle-o"></i> Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript" src="assets/vendor/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="assets/js/admin/main.js"></script>
+        <script type="text/javascript" src="assets/js/admin/checkbox.js"></script>
+        <script type="text/javascript" src="assets/js/admin/galeria.js"></script>
+        <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>
+        <script src="assets/vendor/notify/js/notifIt.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $('#btn-remove-selecao').on('click', function () {
+                if ($('.checkbox-remove:checked').length >= 1) {
+                    $('#ModalRemove').modal('show');
+                } else {
+                    _alert_error('<p><i class="f fa-warning-sign"></i> Nenhum vídeo selecionado</p>');
+                }
+            })
+            $('.btn-video-remove').on('click', function () {
+                $('#btn-remove-selecao').html('<i class="fa fa-trash"></i> Remover Selecionados');
+                $('.div-btn-remove-xs').removeClass('hide').removeClass('hidden-xs').show();
+            })
+            $('#btn-confirm-remove').on('click', function () {
+                var lista = [];
+                $('.checkbox-remove:checked').each(function (k, v) {
+                    lista.push({video_id: $(this).val()});
+                })
+                var url = baseUri + '/painel/galeria/removeVideo/'
+                $.post(url, {lista: lista}, function (data) {
+                    $(lista).each(function (k, v) {
+                        $('#d_' + v.video_id).fadeOut();
+                    })
+                    $('#ModalRemove').modal('hide');
+                    _alert('<p><i class="fa fa-check-circle-o"></i> Vídeo(s) removido(s)</p>');
+                })
+            })
+        </script>          
+        <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

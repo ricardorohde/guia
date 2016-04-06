@@ -1,0 +1,202 @@
+<div class="panel-group menu-left" id="accordion">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a href="{BASEURI}/painel/index/" class="text-upper link-click">
+                    Dashboard  <span class="pull-right"> <i class="fa fa-bar-chart"></i></span>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-dashboard" class="panel-collapse collapse"></div>
+    </div>
+
+    <div class="panel panel-primary <?= ($this->isMod('slideshow')) ? 'mod' : 'hide'; ?>">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-slide" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-briefcase"></i></span> Banner's Laterais
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-slide" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/slide/banner/"><span class="pull-right"> <i class="fa fa-bars"></i></span> Parceiros & Destaques</a></li>
+                    <!-- <li><a href="{BASEURI}/painel/slide/"><span class="pull-right"> <i class="fa fa-bars"></i></span> Listar Empresas</a></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary <?= ($this->isMod('cliente')) ? 'mod' : 'hide'; ?>">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-cliente" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-briefcase"></i></span> Empresas
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-cliente" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/cliente/"><span class="pull-right"> <i class="fa fa-bars"></i></span> Listar Clientes</a></li>
+                    <li><a href="{BASEURI}/painel/cliente/novo/"><span class="pull-right"> <i class="fa fa-plus-circle"></i></span> Novo Cliente</a></li>
+                    <li><a href="{BASEURI}/painel/grupo/"><span class="pull-right"> <i class="fa fa-plus-circle"></i></span> Gerenciar Grupos</a></li>
+                    <li class="hide"><a href="{BASEURI}/painel/depoimento/"><span class="pull-right"> <i class="fa fa-bullhorn"></i></span> Depoimentos</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-primary <?= ($this->isMod('pagina')) ? 'mod' : 'hide'; ?>"">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-pagina" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-file-text"></i></span> Conteúdo do Site
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-pagina" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/pagina/"> <span class="pull-right"> <i class="fa fa-bars"></i></span> Páginas Cadastradas</a></li>
+                    <li><a href="{BASEURI}/painel/pagina/nova/"> <span class="pull-right"> <i class="fa fa-plus-circle"></i></span> Cadastrar Nova Página</a></li>
+                    <li><a href="{BASEURI}/painel/area/"> <span class="pull-right"> <i class="fa fa-bookmark-o"></i></span> Gerenciar Áreas</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary <?= ($this->isMod('noticia')) ? 'mod' : 'hide'; ?>">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-noticia" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-newspaper-o"></i></span> Notícias
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-noticia" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/noticia/"><span class="pull-right"><i class="fa fa-bars"></i></span> Listar Notícias</a></li>
+                    <li><a href="{BASEURI}/painel/noticia/nova/"><span class="pull-right"><i class="fa fa-plus-circle"></i></span> Nova Notícia</a></li>
+                    <li><a href="{BASEURI}/painel/ncategoria/"><span class="pull-right"><i class="fa fa-folder-o"></i></span> Gerenciar Categorias</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary <?= ($this->isMod('galeria')) ? 'mod' : 'hide'; ?>">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-midia" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-picture-o"></i></span> Mídias
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-midia" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/galeria/"> <span class="pull-right"> <i class="fa fa-camera-retro"></i></span> Gerenciar Galerias</a></li>
+                    <li><a href="{BASEURI}/painel/slide/"> <span class="pull-right"> <i class="fa fa-slideshare"></i></span> Gerenciar Slideshow</a></li>
+                    <li><a href="{BASEURI}/painel/slide/banner/"> <span class="pull-right"> <i class="fa fa-picture-o"></i></span> Gerenciar Banner</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel panel-primary <?= ($this->isMod('servico')) ? 'mod' : 'hide'; ?>">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-servico" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-umbrella"></i></span> Nossos Serviços
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-servico" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/servico/"><span class="pull-right"> <i class="fa fa-bars"></i></span> Listar Serviços</a></li>
+                    <li><a href="{BASEURI}/painel/servico/novo/"><span class="pull-right"> <i class="fa fa-plus-circle"></i></span> Novo Serviço</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary <?= ($this->isMod('faq')) ? 'mod' : 'hide'; ?>">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-faq" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-question-circle"></i></span> Perguntas Frequentes
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-faq" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/faq/"><span class="pull-right"> <i class="fa fa-bars"></i></span> Listar Perguntas</a></li>
+                    <li><a href="{BASEURI}/painel/faq/nova/"><span class="pull-right"> <i class="fa fa-plus-circle"></i></span> Nova Pergunta</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary <?= ($this->isMod('produto')) ? 'mod' : 'hide'; ?>">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-produto" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-shopping-cart"></i></span> Produtos
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-produto" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/produto/"> <span class="pull-right"> <i class="fa fa-bars"></i></span> Exibir Produtos</a></li>
+                    <li><a href="{BASEURI}/painel/produto/novo/"> <span class="pull-right"> <i class="fa fa-plus-circle"></i></span> Novo Produto</a></li>
+                    <li><a href="{BASEURI}/painel/categoria/"> <span class="pull-right"> <i class="fa fa-folder-o"></i></span> Gerenciar Categorias</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-empresa" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-building-o"></i></span> Empresa
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-empresa" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/configuracao/contato/"><span class="pull-right"> <i class="fa fa-phone-square"></i></span>  Dados de Contato </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <?php $this->menuMod() ?>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-configuracao" class="text-upper">
+                    <span class="pull-right"> <i class="fa fa-wrench"></i></span> Configurações
+                </a>
+            </h4>
+        </div>
+        <div id="collapse-configuracao" class="panel-collapse collapse">
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><a href="{BASEURI}/painel/configuracao/site/"><span class="pull-right"> <i class="fa fa-bullhorn"></i></span>Logo e Nome/Slogan</a></li>                    
+                    <li class="hide"><a href="{BASEURI}/painel/configuracao/tema/"><span class="pull-right"> <i class="fa fa-paint-brush"></i></span>  Aparência e Temas </a></li>
+                    <li><a href="{BASEURI}/painel/configuracao/seo/"><span class="pull-right"> <i class="fa fa-search"></i></span>  Configurar SEO </a></li>
+                    <li><a href="{BASEURI}/painel/configuracao/email/"><span class="pull-right"> <i class="fa fa-envelope-o"></i></span>  Configurar SMTP</a></li>
+                    <li><a href="{BASEURI}/painel/configuracao/social/"><span class="pull-right"> <i class="fa fa-share-alt-square"></i></span>  Redes Sociais</a></li>
+                    <li><a href="{BASEURI}/painel/usuario/"><span class="pull-right"> <i class="fa fa-group"></i></span>  Usuários do Sistema</a></li>
+            </div>
+        </div>
+    </div>
+
+</div>

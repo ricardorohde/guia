@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="keywords" content="{SITE_KEYWORDS}">
+        <meta name="author" content="{SITE_AUTOR}">
+        <title>{SITE_TITLE} - {SITE_SLOGAN}</title>
+
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+        <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">    
+        <link rel='stylesheet' type='text/css' href="{SITE_TEMPLATE}/css/main.css?v=<?= date('dmyhis') ?>">
+
+        <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+        <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+        <script src="{SITE_TEMPLATE}/js/respond.min.js"></script>
+        <script src="{SITE_TEMPLATE}/js/owl.carousel.min.js"></script>
+    </head>
+    <body>
+        <?php require_once 'top_bar.phtml'; ?>	
+        <?php require_once 'top_menu.phtml'; ?>	
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <?php require_once 'top_busca.phtml'; ?>
+                    <div class="main_content">
+                        <br />
+                        <h3 class="title"><span class="pull-left">NAVEGUE E ENCONTRE POR CATEGORIA</span></h3>
+                        <div class="row">
+                            <?php $letras = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'L', 'K', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z'); ?>        
+                            <?php foreach ($letras as $letra): ?>        
+                                <?php $obj = $this->modulo['cliente']['obj']; ?>
+                                <?php $let = $obj->getGrupoByLetter("$letra"); ?>
+                                <?php if (isset($let[0])) : ?>
+                                    <div class="listing_sub_categories  col-md-6">
+                                        <h3 style="color: #2949D5"><?= $letra ?></h3>
+                                        <?php foreach ($let as $s): ?>                                     
+                                            <a href="{SITE_BASEURI}/encontre/em/<?= $s->grupo_url ?>/">» <?= $s->grupo_nome ?></a><br>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php if ($this->isMod('cliente')): ?>
+                            <?php if (isset($this->modulo['cliente']['menu-lista'])): ?>
+                                <?php $mod = 0; ?>
+                                <?php $k = count($this->modulo['cliente']['menu-lista']) - 1; ?>
+                                <?php foreach ($this->modulo['cliente']['menu-lista'] as $s): ?>                                     
+                                    <?php if ($mod == 0): ?>
+                                        <div class="row listing_sub_categories hide">
+                                        <?php endif; ?>
+                                        <div class="col-md-3"><a href="{SITE_BASEURI}/encontre/em/<?= $s->grupo_url ?>/">» <?= $s->grupo_nome ?></a></div>
+                                        <?php if ($mod == 3 || $k == 0): ?>
+                                            <?php $mod = -1; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php $mod++; ?>
+                                    <?php $k--; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <p>&nbsp;</p>
+
+                        <h3 class="title">
+                            <span class="pull-left"><?= $this->modulo['cliente']['config']->{'categorias-titulo'} ?></span>
+                        </h3>
+
+                        <div class="row">
+                            <div class="form-groups product_listing">
+                                <?php if ($this->isMod('cliente')): ?>
+                                    <?php if (isset($this->modulo['cliente']['data-home'])): ?>
+                                        <?php foreach ($this->modulo['cliente']['data-home'] as $s): ?>                                     
+                                            <div class="col-md-3 col-sm-12">
+                                                <div class="item" style="margin-bottom: 20px;min-height: 235px;" data-placement="bottom" title="<?= $s->cliente_empresa ?> - <?= $s->cliente_nome ?>">
+                                                    <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/">
+                                                        <img src="{SITE_BASEURI}/thumb.php?zc=2&h=200&w=250&src=<?= Imagem:: get("midia/cliente", "$s->cliente_logo") ?>" alt="" class="img-thumbnail img-responsive">
+                                                    </a>
+                                                    <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/" class="title"><?= $s->cliente_empresa ?></a><br/>
+                                                    em <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/" class="subinfo"><?= $s->grupo_nome ?></a> 
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <?php require_once 'right_bar.phtml'; ?>
+            </div>			
+        </div>
+        <?php require_once 'rodape.phtml'; ?>
+
+        <script>
+            $(function () {
+                $('#top-menu-categoria').addClass('active');
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    </body>	
+</html>

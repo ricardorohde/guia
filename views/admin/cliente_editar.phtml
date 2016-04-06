@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/">
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet"
+              type="text/css">
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <link href="assets/vendor/fakeinput/fakeinput.css" rel="stylesheet" type="text/css">
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?>
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?>
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+
+
+                <div class="navbar-fixed-bottom navbar-inverse hide toolbar-save bg-primary opacity-8">
+                    <div class="container-fluid">
+                        <div class="pull-left">
+                            <button class="btn btn-primary">
+                                <i class="fa fa-cog fa-spin fa-1x"></i>
+                            </button>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-primary go-to-top"><i class="fa fa-chevron-up"></i> Voltar ao Topo</button>
+                            <button class="btn btn-primary" id="trig-submit"><i class="fa fa-refresh"></i> Atualizar</button>
+                            <a href="{BASEURI}/painel/cliente/" class="btn btn-primary"><i class="fa fa-times-circle-o"></i>
+                                Cancelar</a>
+                            <a href="{BASEURI}/painel/cliente/" class="btn btn-primary"><i class="fa fa-chevron-left"></i>
+                                Voltar</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin">
+                            <i class="fa fa-suitcase"></i> &nbsp; Clientes &nbsp;
+                            <i class="fa fa-angle-right"></i> &nbsp; Editar &nbsp;
+                            <i class="fa fa-angle-right"></i> &nbsp; <?= $this->data->{'cliente_nome'} ?>
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <i class="fa fa-pencil"></i>
+                        Editar Dados do Cliente
+                    </p>
+
+                    <div class="panel-body">
+                        <p class="text-right">
+                            <a href="{BASEURI}/painel/cliente/" class="btn btn-primary">
+                                <i class="fa fa-bars"></i> Listar Clientes
+                            </a>
+                        </p>
+
+                        <div class="">
+                            <div>
+                                <form action="{BASEURI}/painel/cliente/atualizar/" enctype="multipart/form-data"
+                                      role="form" method="post" id="form-cliente">
+
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_empresa">Cliente Ativo?</label>
+                                        <br/>
+                                        <input type="checkbox"
+                                               class="cliente_status"
+                                               title="Cliente Ativo?"
+                                               name="cliente_status"
+                                               data-size="small"
+                                               data-label-text="<i class='fa fa-th-large'></i>"
+                                               data-on-text="SIM"
+                                               data-off-text="NÃO"
+                                               url="{BASEURI}/encontre/<?= $this->data->{grupo_url}."/".$this->data->{cliente_url}; ?>/"
+                                               email="<?= $this->data->{cliente_email}; ?>"
+                                               id="<?= $this->data->{cliente_id}; ?>"
+                                               value="<?= $this->data->{cliente_status}; ?>"
+                                               checked/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_tipo">Perfil do cliente</label>
+                                        <select name="cliente_tipo" id="cliente_tipo" class="form-control" required>
+                                            <option value="">Selecione um perfil...</option>
+                                            <option value="1">Anunciante Comum</option>
+                                            <option value="2">VIP</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_grupo">Grupo / Categoria</label>
+                                        <select name="cliente_grupo" id="cliente_grupo" class="form-control" required>
+                                            <option value="0">Selecione um grupo...</option>
+                                            <?php if (isset($this->grupo)): ?>
+                                                <?php foreach ($this->grupo as $s): ?>
+                                                    <option value="<?= $s->grupo_id ?>"><?= $s->grupo_nome ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_empresa">Nome da Empresa</label>
+                                        <input type="text" name="cliente_empresa" id="cliente_empresa" class="form-control"
+                                               placeholder="Informe o nome da empresa"
+                                               value="<?= $this->data->{cliente_empresa} ?>"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_nome">Slogan (opcional - até 150 caracteres)</label>
+                                        <input type="text" name="cliente_nome" id="cliente_nome" class="form-control"
+                                               placeholder="Informe o nome do contato"
+                                               value="<?= $this->data->{cliente_nome} ?>" maxlength="150"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_nome">Palavras-chave (até 150 caracteres separados por vírgula ex:
+                                            pizza, delivery, etc..)</label>
+                                        <input type="text" name="cliente_meta_keywords" id="cliente_meta_keywords"
+                                               class="form-control"
+                                               placeholder="Palavras-chave para buscas ex: pizzaria, delivery, fast food"
+                                               maxlength="150" value="<?= $this->data->{'cliente_meta_keywords'} ?>"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_fone">Telefone 01</label>
+                                        <input type="text" name="cliente_fone" id="cliente_fone" class="fone form-control"
+                                               placeholder="Informe um número de telefone"
+                                               value="<?= $this->data->{'cliente_fone'} ?>"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_fone2">Telefone 02</label>
+                                        <input type="text" name="cliente_fone2" id="cliente_fone2" class="fone form-control"
+                                               placeholder="Informe um número de telefone"
+                                               value="<?= $this->data->{'cliente_fone2'} ?>"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_site">Site</label>
+                                        <input type="text" name="cliente_site" id="cliente_site" class="form-control"
+                                               placeholder="Informe o link do site"
+                                               value="<?= $this->data->{'cliente_site'} ?>"/>
+                                    </div>
+
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_cep">CEP</label>
+                                        <input type="text" name="cliente_cep" id="cliente_cep" class="cep form-control"
+                                               value="<?= $this->data->{'cliente_cep'} ?>"
+                                               placeholder="Informe o cep do local"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_endereco">Endereco</label>
+                                        <input type="text" name="cliente_endereco" id="cliente_endereco" class="form-control"
+                                               value="<?= $this->data->{'cliente_endereco'} ?>"
+                                               placeholder="Informe o endereço ex: Avenida Brasil"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_num">Número</label>
+                                        <input type="text" name="cliente_num" id="cliente_num" class="form-control"
+                                               value="<?= $this->data->{'cliente_num'} ?>"
+                                               placeholder="Informe o número do local ex: 100"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_complemento">Complemento</label>
+                                        <input type="text" name="cliente_complemento" id="cliente_complemento"
+                                               class="form-control" value="<?= $this->data->{'cliente_complemento'} ?>"
+                                               placeholder="Informe o complemento ex: 10º Andar - Sala 2 "/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_bairro">Bairro</label>
+                                        <input type="text" name="cliente_bairro" id="cliente_bairro" class="form-control"
+                                               value="<?= $this->data->{'cliente_bairro'} ?>"
+                                               placeholder="Informe o bairro"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_cidade">Cidade</label>
+                                        <input type="text" name="cliente_cidade" id="cliente_cidade" class="form-control"
+                                               value="<?= $this->data->{'cliente_cidade'} ?>"
+                                               placeholder="Informe o endereço completo ex: São Paulo"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_uf">UF/Estado</label>
+                                        <select class="form-control" name="cliente_uf" id="cliente_uf">
+                                            <option value="AC">AC</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AM">AM</option>
+                                            <option value="AP">AP</option>
+                                            <option value="BA">BA</option>
+                                            <option value="CE">CE</option>
+                                            <option value="DF">DF</option>
+                                            <option value="ES">ES</option>
+                                            <option value="GO">GO</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MG">MG</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MT">MT</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PB">PB</option>
+                                            <option value="PE">PE</option>
+                                            <option value="PI">PI</option>
+                                            <option value="PR">PR</option>
+                                            <option value="RJ">RJ</option>
+                                            <option value="RN">RN</option>
+                                            <option value="RO">RO</option>
+                                            <option value="RR">RR</option>
+                                            <option value="RS">RS</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SE">SE</option>
+                                            <option value="SP">SP</option>
+                                            <option value="TO">TO</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group form-inline well well-sm">
+                                        <label>Logo do Cliente </label>
+
+                                        <div class="fakeipt">
+                                            <div class="uploader black">
+                                                <input type="text" class="filename" readonly="readonly"/>
+                                                <input type="button" name="file" id="file" class="button"
+                                                       value="Selecionar Imagem"/>
+                                                <input type="file" name="filedata" id="filedata" size="30"/>
+                                            </div>
+                                            <div class="pull-right" id="slide-preview">
+                                                <img
+                                                    src="{BASEURI}/<?= Imagem:: get("midia/cliente", $this->data->{'cliente_logo'}) ?>"
+                                                    class="img-thumbnail" style="margin-top: -25px;width:140px; height: 75px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_info">Descrição (máximo 1000 caracteres)</label>
+                                        <textarea name="cliente_info" id="cliente_info" rows="8" class="form-control"
+                                                  placeholder="Descrição dos serviços prestados" maxlength="1000"
+                                                  required><?= $this->data->{'cliente_info'} ?></textarea>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_email">E-mail</label>
+                                        <input type="email" name="cliente_email" id="cliente_email" class="form-control" placeholder="Informe um endereço de e-mail"  value="<?= $this->data->{'cliente_email'} ?>" required/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_senha">Senha</label>
+                                        <div id="div-pass">
+                                            <input type="password" name="cliente_senha" id="cliente_senha" class="form-control" placeholder="Informe uma senha de acesso"  pattern=".{6,}" minlength="6"/>
+                                        </div>
+                                    </div>                            
+
+                                    <div>
+                                        <p class="text-right">
+                                            <button type="submit" class="btn btn-primary" id="btn-add-update"><i
+                                                    class="fa fa-refresh"></i> <span
+                                                    id="btn-add-update-cliente">Atualizar</span></button>
+                                            <button type="button" class="btn btn-danger" id="btn-add-update-cancel"><i
+                                                    class="fa fa-times-circle-o"></i> <span>Cancelar</span></button>
+                                        </p>
+                                    </div>
+                                    <input type="hidden" name="cliente_id" id="cliente_id"
+                                           value="<?= $this->data->{cliente_id} ?>"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="assets/vendor/jquery-1.11.0.min.js" type="text/javascript"></script>
+            <script src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="assets/js/admin/main.js" type="text/javascript"></script>
+            <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>
+            <script src="assets/vendor/jquery.mask.min.js" type="text/javascript"></script>
+            <script src="assets/js/admin/cliente.js"></script>
+            <script src="assets/vendor/fakeinput/fakeinput.js" type="text/javascript"></script>
+            <script src="assets/vendor/notify/js/notifIt.js" type="text/javascript"></script>
+            <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">
+            <script type="text/javascript">$('#cliente_grupo').val('<?= $this->data->{'cliente_grupo'} ?>');</script>
+            <script type="text/javascript">$('#cliente_uf').val('<?= $this->data->{'cliente_uf'} ?>');</script>
+            <script type="text/javascript">[FN_ONLOAD]
+                /*executa funcoes js vindas do controller */</script>
+            <script type="text/javascript">[FN_ONLOAD_TAB]
+                /*executa funcoes js vindas do controller */</script>
+            <script type="text/javascript" src="assets/vendor/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+            <script type="text/javascript">
+                        $("#cliente_tipo").val('<?= $this->data->{'cliente_tipo'} ?>');
+                        $(".cliente_status").each(function () {
+                            if ($(this).val() >= 2) {
+                                $(this).bootstrapSwitch('state', true, true);
+                            }
+                            else {
+                                $(this).bootstrapSwitch('state', false, false);
+                            }
+                            $(this).bootstrapSwitch('onSwitchChange', function () {
+                                var cliente_id = $(this).attr('id');
+                                var cliente_url = $(this).attr('url');
+                                var cliente_email = $(this).attr('email');
+                                var cliente_status = $(this).bootstrapSwitch('state');
+                                if (cliente_status) {
+                                    cliente_status = 2;
+                                } else {
+                                    cliente_status = 1;
+                                }
+                                var url = baseUri + 'painel/cliente/status/'
+                                $.post(url, {cliente_id: cliente_id, cliente_status: cliente_status, cliente_email:cliente_email,cliente_url: cliente_url}, function (data) {
+                                    _alert_info('<p><i class="glyphicon glyphicon-ok-circle"></i> Status Atualizado</p>', 'center')
+                                })
+                            });
+                        })
+            </script>
+
+            <script type="text/javascript">
+                        $(function () {
+                            $('#cliente_cep').mask('99999-999');
+                            $('#cliente_cep').on('change', function () {
+                                var url = '{BASEURI}/cep/getcep/?cep=' + $.trim($(this).val());
+                                $.getJSON(url, {}, function (data) {
+                                    if (data != -1) {
+                                        $('#cliente_endereco').val(data.rs[0].endereco);
+                                        $('#cliente_bairro').val(data.rs[0].bairro);
+                                        $('#cliente_cidade').val(data.rs[0].cidade);
+                                        $('#cliente_uf').val(data.rs[0].uf);
+                                        $('#cliente_num').focus();
+                                    }
+                                });
+                            });
+                        });
+            </script>
+    </body>
+</html>

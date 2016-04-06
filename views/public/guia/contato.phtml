@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="keywords" content="{SITE_KEYWORDS}">
+        <meta name="author" content="{SITE_AUTOR}">
+        <title>{SITE_TITLE} - {SITE_SLOGAN}</title>
+
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+        <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">    
+        <link rel='stylesheet' type='text/css' href="{SITE_TEMPLATE}/css/main.css?v=<?= date('dmyhis') ?>">
+
+        <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+        <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+        <script src="{SITE_TEMPLATE}/js/owl.carousel.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <?php require_once 'top_bar.phtml'; ?>	
+        <?php require_once 'top_menu.phtml'; ?>	
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <?php require_once 'top_busca.phtml'; ?>
+                    <div class="main_content">
+                        <br />
+                        <?php if ($this->slide_view == 1): ?>
+                            <div id="slide-top" class="myCarousel carousel slide home">
+                                <div class="carousel-inner">
+                                    <?php if ($this->isMod('slideshow')): ?>
+                                        <?php $k = 0; ?> 
+                                        <?php foreach ($this->modulo['slideshow']['data'] as $s): ?>
+                                            <?php if (file_exists("midia/slide/$s->slide_url")): ?>
+                                                <div class="item <?= ($k == 0) ? 'active' : '' ?>">
+                                                    <img src="midia/slide/<?= $s->slide_url ?>" style="width:100%; max-height: 270px;" class="img-responsive" />
+                                                    <div class="carousel-caption">
+                                                        <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                                            <a  href="<?= Filter::trim_str($s->slide_link) ?>">
+                                                            <?php endif; ?>
+                                                            <?php if ($s->slide_titulo != ""): ?>
+                                                                <h4><?= $s->slide_titulo ?></h4>
+                                                            <?php endif; ?>
+                                                            <?php if ($s->slide_msg != ""): ?>
+                                                                <p class="lead hidden-xs"><?= Filter:: cut($s->slide_msg, 100, '...') ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                                                <?php if ($s->slide_titulo == "" && $s->slide_msg == ""): ?>
+                                                                    <?= $this->modulo['slideshow']['config']->{'btn-link'} ?>
+                                                                <?php endif; ?>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    </div>                                            
+                                                <?php endif; ?>                                
+                                            </div>                                                        
+                                            <?php $k++; ?>                                
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>   
+                                </div>
+                                <a class="left carousel-control" href="#slide-top" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#slide-top" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <h3 class="title">
+                            <span class="pull-left text-uppercase">entre em contato com  {SITE_TITLE}</span>
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h4>DADOS DE CONTATOS</h4>
+                                <p>
+                                    <strong>FONE:</strong> <br> 
+                                    <?= $this->modulo['contato']['data']->{'contato_fone'} ?> <br>
+                                    <?= $this->modulo['contato']['data']->{'contato_fone1'} ?> <br>
+                                    <?= $this->modulo['contato']['data']->{'contato_fone2'} ?> <br>
+                                    <?= $this->modulo['contato']['data']->{'contato_fone3'} ?> <br>
+                                    <?= $this->modulo['contato']['data']->{'contato_fone4'} ?> <br><br>
+                                    <strong>Email:</strong>&nbsp;
+                                    <a href="#"><?= $this->modulo['contato']['data']->{'contato_email'} ?></a>		
+                                    <br /><br />
+                                    <strong>Siga-nos nas Redes Sociais</strong>		<br />
+                                    
+                                    <p>
+                                    <?php if($this->modulo['social']['data']->social_facebook != ""): ?>
+                                    <a href="<?= $this->modulo['social']['data']->social_facebook?>"><i class="fa fa-3x fa-facebook-square"></i></a> &nbsp;
+                                    <?php endif; ?>
+
+                                    <?php if($this->modulo['social']['data']->social_twitter != ""): ?>
+                                    <a href="<?= $this->modulo['social']['data']->social_twitter?>"><i class="fa fa-3x fa-twitter-square"></i></a> &nbsp;
+                                    <?php endif; ?>
+
+                                    <?php if($this->modulo['social']['data']->social_linkedin != ""): ?>
+                                    <a href="<?= $this->modulo['social']['data']->social_linkedin?>"><i class="fa fa-3x fa-linkedin-square"></i></a> &nbsp;
+                                    <?php endif; ?>                                         
+
+                                    <?php if($this->modulo['social']['data']->social_instagram != ""): ?>
+                                    <a href="<?= $this->modulo['social']['data']->social_instagram?>"><i class="fa fa-3x fa-instagram"></i></a> &nbsp;
+                                    <?php endif; ?>
+
+                                    <?php if($this->modulo['social']['data']->social_plus != ""): ?>
+                                    <a href="<?= $this->modulo['social']['data']->social_plus?>"><i class="fa fa-3x fa-google-plus-square"></i></a> &nbsp;
+                                    <?php endif; ?>                                    
+
+                                    </p>
+
+                                </p>
+                            </div>
+                            <div class="col-md-7">
+                                <h4>FORMULÁRIO DE CONTATO</h4>
+                                <form role="form" method="POST" name="form-contato" id="form-contato" onsubmit="return false">
+                                    <div class="form-group">
+                                        <label><?= $this->modulo['contato']['config']->{'label-nome'} ?>:</label>
+                                        <input type="text" class="form-control" name="contato_nome" id="contato_nome"  required
+                                               placeholder="<?= $this->modulo['contato']['config']->{'placeholder-nome'} ?>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><?= $this->modulo['contato']['config']->{'label-email'} ?>:</label>
+                                        <input type="email" name="contato_email" id="contato_email" class="form-control"  required
+                                               placeholder="<?= $this->modulo['contato']['config']->{'placeholder-email'} ?>">
+                                    </div>
+                                    <div class="form-group">		
+                                        <label><?= $this->modulo['contato']['config']->{'label-mensagem'} ?>:</label>
+                                        <textarea class="form-control" name="contato_mensagem" id="contato_mensagem" style="height: 100px" required
+                                                  placeholder="<?= $this->modulo['contato']['config']->{'placeholder-mensagem'} ?>..."></textarea>					
+                                    </div>
+                                    <div class="form-group">										
+                                        <button type="submit" class="btn btn-primary" id="btn-contato-enviar">
+                                            <?= $this->modulo['contato']['config']->{'btn-send'} ?>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>		
+
+                        <h3 class="title"><span class="pull-left">NOVOS NO SITE</span>
+                            <span class="pull-right"><a href="{SITE_BASEURI}/encontre/">Ver todos</a></span></h3>
+                        <div class="row">
+                            <div class="span12 product_listing">
+                                <div id="owl-carousel" class="owl-carousel">
+                                    <?php if ($this->isMod('cliente')): ?>
+                                        <?php if (isset($this->modulo['cliente']['data-last'])): ?>
+                                            <?php foreach ($this->modulo['cliente']['data-last'] as $s): ?>   
+                                                <div class="col-md-12">
+                                                    <div class="item">
+                                                        <span class="btn-block text-right"><span class="label label-success">novo</span></span>
+                                                        <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/">
+                                                            <img src="{SITE_BASEURI}/thumb.php?zc=2&h=200&w=250&src=<?= Imagem:: get("midia/cliente", "$s->cliente_logo") ?>" alt="" class="img-thumbnail img-responsive">
+                                                        </a>
+                                                        <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/" class="title"><?= $s->cliente_empresa ?></a> 
+                                                        em <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/" class="subinfo"><?= $s->grupo_nome ?></a> 
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>			
+                                </div>								
+                            </div>
+                        </div>		
+
+                        <h3 class="title"><span class="pull-left text-uppercase">ṹltimas notícias</span><span class="pull-right"><a href="view_all.html">Ver todas as notícias</a></span></h3>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <?php if (isset($this->modulo['noticia']['data'][0])): ?>
+                                    <?php $k = 0; ?>
+                                    <?php foreach ($this->modulo['noticia']['data'] as $s): ?>
+                                        <?php if ($k <= 1) : ?>
+                                            <div class="featured-item">
+                                                <a href="{SITE_BASEURI}/noticia/<?= (isset($s->ncategoria_url)) ? "$s->ncategoria_url/$s->noticia_url" : "geral/$s->noticia_url" ?>/<?= $s->noticia_id ?>/">
+                                                    <img src="{SITE_BASEURI}/thumb.php?w=152&h=85&src=<?= Imagem:: get("midia/news", "$s->noticia_capa") ?>" class="img pull-left" width="152" height="85" alt=""/>                                    
+                                                </a>
+                                                <strong><a href="{SITE_BASEURI}/noticia/<?= (isset($s->ncategoria_url)) ? "$s->ncategoria_url/$s->noticia_url" : "geral/$s->noticia_url" ?>/<?= $s->noticia_id ?>/"><?= $s->noticia_titulo ?> </a></strong>
+                                                <p><?= $s->noticia_data ?></p> 
+                                                <p><?= Filter::cut($s->noticia_texto, 90, '...') ?> </p>
+                                            </div>
+                                            <?php $k++; ?>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>  
+
+                            <div class="col-md-5">
+                                <div class="other_info">
+                                    <?php if (isset($this->modulo['noticia']['data'])): ?>
+                                        <?php $this->modulo['noticia']['data'] = array_slice($this->modulo['noticia']['data'], 2, count($this->modulo['noticia']['data'])) ?>
+                                        <?php if (isset($this->modulo['noticia']['data'][0])): ?>
+                                            <?php foreach ($this->modulo['noticia']['data'] as $s): ?>
+                                                <?php //if ($k > 1) : ?>
+                                                <p>
+                                                    <strong><a href="{SITE_BASEURI}/noticia/<?= (isset($s->ncategoria_url)) ? "$s->ncategoria_url/$s->noticia_url" : "geral/$s->noticia_url" ?>/<?= $s->noticia_id ?>/"><?= $s->noticia_titulo ?> </a></strong> <br/>
+                                                    <?= $s->noticia_data ?>
+                                                </p> 
+                                                <?php $k++; ?>
+                                                <?php //endif; ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php require_once 'right_bar.phtml'; ?>
+            </div>			
+        </div>
+        <?php require_once 'rodape.phtml'; ?>
+        <script>
+            baseUri = '{SITE_BASEURI}';
+            if ($('.carousel').length >= 1) {
+                $('.carousel').carousel({
+                    interval: 2000
+                });
+            }
+            $("#owl-carousel").owlCarousel({
+                autoPlay: 3000, //Set AutoPlay to 3 seconds
+                items: 4, pagination: true
+            });
+            $(function () {
+                $('#top-menu-contato').addClass('active');
+                $('[data-toggle="tooltip"]').tooltip();
+
+            });
+        </script>
+        <script src="{SITE_TEMPLATE}/js/contato.js"></script>
+    </body>	
+</html>

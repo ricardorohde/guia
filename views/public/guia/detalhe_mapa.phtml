@@ -1,0 +1,95 @@
+<?php $lat_lon = json_decode($this->data['cliente']->{'cliente_lat_lon'}); ?>        
+<script src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry&v=3.7"></script>        
+<script>
+    $(function () {
+        var mapCenter = new google.maps.LatLng(<?= $lat_lon->{'lat'} ?>,<?= $lat_lon->{'lon'} ?>); //Google map Coordinates
+        var map;
+        map_initialize();
+        function map_initialize() {
+            var googleMapOptions = {
+                scrollwheel: false,
+                center: mapCenter, // map center
+                zoom: 17, //zoom level, 0 = earth view to higher value
+                panControl: false, //enable pan Control
+                zoomControl: true, //enable zoom control
+                zoomControlOptions: {
+                    style: google.maps.ZoomControlStyle.SMALL //zoom control size
+                },
+                scaleControl: true, // enable scale control
+                mapTypeId: google.maps.MapTypeId.ROADMAP // google map type
+            };
+            map = new google.maps.Map(document.getElementById("gmap"), googleMapOptions);
+            var marker = new google.maps.Marker({
+                position: mapCenter, //map Coordinates where user right clicked
+                map: map,
+                title: "<?= $this->data['cliente']->{'cliente_empresa'} ?> +info",
+                icon: '{SITE_BASEURI}/assets/images/marker.png',
+            });
+            //Content structure of info Window for the Markers
+            var contentString = '<div id="content">' +
+                    //'<div id="siteNotice">' +
+                    //'</div>' +
+                    '<h1 id="firstHeading" class="firstHeading"><?= $this->data['cliente']->{'cliente_empresa'} ?> </h1>' +
+                    '<div id="bodyContent">' +
+                    '<p>' +
+                    '<b><?= $this->data['cliente']->{'cliente_endereco'} ?>, <?= $this->data['cliente']->{'cliente_num'} ?> - <?= $this->data['cliente']->{'cliente_complemento'} ?>,<?= $this->data['cliente']->{'cliente_bairro'} ?>,<?= $this->data['cliente']->{'cliente_cidade'} ?> - <?= $this->data['cliente']->{'cliente_uf'} ?> </b> <br />' +
+                    '<?= $this->data['cliente']->{'cliente_fone'} ?> <br/>' +
+                    '<?= $this->data['cliente']->{'cliente_fone2'} ?> <br/>' +
+                    '</p>' +
+                    '</div>' +
+                    '</div>';
+            //Create an infoWindow
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString,
+                maxWidth: 800,
+            });
+            infowindow.open(map, marker);
+            google.maps.event.addListener(marker, 'click', function () {
+                // infowindow.open(map, marker); 
+            });
+        }
+
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+            google.maps.event.trigger(map, 'resize');
+            var googleMapOptions =
+                    {
+                        scrollwheel: false,
+                        center: mapCenter, // map center
+                        zoom: 16, //zoom level, 0 = earth view to higher value
+                        panControl: false, //enable pan Control
+                        zoomControl: true, //enable zoom control
+                        zoomControlOptions: {
+                            style: google.maps.ZoomControlStyle.SMALL //zoom control size
+                        },
+                        scaleControl: true, // enable scale control
+                        mapTypeId: google.maps.MapTypeId.ROADMAP // google map type
+                    };
+
+            map = new google.maps.Map(document.getElementById("gmap"), googleMapOptions);
+            var marker = new google.maps.Marker({
+                position: mapCenter, //map Coordinates where user right clicked
+                map: map,
+                title: "Hello World!",
+                icon: '{SITE_BASEURI}/assets/images/marker.png',
+            });
+            var contentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    //'<h1 id="firstHeading" class="firstHeading"><?= $this->data['cliente']->{'cliente_empresa'} ?> </h1>' +
+                    '<h4 id="firstHeading" class="firstHeading"><?= $this->data['cliente']->{'cliente_empresa'} ?> </h4>' +
+                    '<div id="bodyContent">' +
+                    '<p>' +
+                    '<b><?= $this->data['cliente']->{'cliente_endereco'} ?>, <?= $this->data['cliente']->{'cliente_num'} ?><?= ($this->data['cliente']->{'cliente_complemento'} != "") ? ' - ' . $this->data['cliente']->{'cliente_complemento'} : ''; ?>, <?= $this->data['cliente']->{'cliente_bairro'} ?>, <?= $this->data['cliente']->{'cliente_cidade'} ?> - <?= $this->data['cliente']->{'cliente_uf'} ?> </b> <br />' +
+                    '<?= $this->data['cliente']->{'cliente_fone'} ?> <br/>' +
+                    '<?= $this->data['cliente']->{'cliente_fone2'} ?> <br/>' +
+                    '</p>' +
+                    '</div>' +
+                    '</div>';
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString,
+                maxWidth: 800,
+            });
+            infowindow.open(map, marker);
+        });
+    });
+</script> 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="keywords" content="{SITE_KEYWORDS}">
+        <meta name="author" content="{SITE_AUTOR}">
+        <title>{SITE_TITLE} - {SITE_SLOGAN}</title>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+        <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">    
+        <link rel='stylesheet' type='text/css' href="{SITE_TEMPLATE}/css/main.css?v=<?= date('dmyhis') ?>">
+        <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+        <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <?php require_once 'top_bar.phtml'; ?>	
+        <?php require_once 'top_menu.phtml'; ?>	
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <?php require_once 'top_busca.phtml'; ?>
+                    <div class="main_content">
+                        <br />
+                        <h3 class="title"><span class="pull-left">DADOS DE ACESSO</span></h3>
+                        <br />                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4><i class="fa fa-building"></i>  Recuperar Dados de Acesso</h4>
+                                <br />
+                                <form role="form" method="post" action="{BASEURI}/cadastro/novasenha/">
+                                    <div class="form-group">
+                                        <label for="cliente_email">Email de Cadastro</label>
+                                        <input type="email" class="form-control" id="cliente_email" name="cliente_email" placeholder="Informe seu e-mail de cadastro" required>
+                                    </div>
+                                    <div class="form-group">										
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-user"></i> Entrar</button>		
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <br /><br /><br /><br />
+                                [MSG_REPASS]
+                            </div>
+                        </div>	
+
+                    </div>
+                </div>
+                <?php require_once 'right_bar.phtml'; ?>
+            </div>			
+        </div>
+        <?php require_once 'rodape.phtml'; ?>
+        <script type="text/javascript">
+            $(function () {
+                $('#top-menu-entrar').addClass('active');
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    </body>	
+</html>

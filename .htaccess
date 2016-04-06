@@ -1,0 +1,17 @@
+Options -MultiViews
+RewriteEngine on
+Options -Indexes
+
+RewriteRule ^plugins/ - [L,NC]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ loader.php?r=$1 [L,QSA]
+RewriteRule ^([a-zA-Z0-9-_/]+)?$ loader.php?r=$1 [L,QSA]
+RewriteRule ^([a-zA-Z0-9-_/]+)/?$ loader.php?r=$1 [L,QSA]
+RewriteRule index.php loader.php?r=$1 [L,QSA]
+#ErrorDocument 404 404.php
+
+<FilesMatch ".(eot|ttf|otf|woff)">
+    #Header set Access-Control-Allow-Origin "*"
+</FilesMatch>

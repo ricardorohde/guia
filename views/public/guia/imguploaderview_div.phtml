@@ -1,0 +1,17 @@
+<!-- para o código funcionar precisa ter o include_once da classe ImageUploader.php -->
+<div id="imguploaderview">
+  <?php
+      $imageUploader = new ImageUploader();
+
+      $fotos = $imageUploader->getImagesByProduto(2);
+
+      if (!empty($fotos) && count($fotos) > 1){
+        foreach ($fotos as $value) {
+          $filename = $value['filename'];
+          $fileext = $value['fileext'];
+
+          echo "<img src=" . 'http://localhost/guiafacil/assets/images/promo/' . $filename . "." . $fileext . ">";
+        }
+      }
+    ?>
+</div>

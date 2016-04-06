@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="<?= (isset($this->data['noticia']->{'noticia_meta_desc'})) ? $this->data['noticia']->{'noticia_meta_desc'} : '{SITE_DESCRIPTION}' ?>">
+    <meta name="keywords"
+          content="<?= (isset($this->data['noticia']->{'noticia_meta_keywords'})) ? $this->data['noticia']->{'noticia_meta_keywords'} : '{SITE_KEYWORDS}' ?>">
+    <meta name="author" content="{SITE_AUTOR}">
+    <title><?= (isset($this->data['noticia']->{'noticia_titulo'})) ? $this->data['noticia']->{'noticia_titulo'} . " | " : 'Notícias - '; ?>
+        [SITE_TITLE] - {SITE_SLOGAN}</title>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+    <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel='stylesheet' type='text/css' href="{SITE_TEMPLATE}/css/main.css?v=<?=date('dmyhis')?>">
+    <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+    <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<?php require_once 'top_bar.phtml'; ?>
+<?php require_once 'top_menu.phtml'; ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <?php require_once 'top_busca.phtml'; ?>
+            <div class="main_content">
+                <br/>
+                <?php if (isset($this->data['noticia']->{'noticia_titulo'})): ?>
+                    <h4 class="no-margin-t"><?= $this->data['noticia']->{'noticia_titulo'} ?></h4>
+                    <?= $this->data['noticia']->{'noticia_texto'} ?>
+                <?php elseif (isset($this->data['noticia'][0])): ?>
+                    <?php foreach ($this->data['noticia'] as $s): ?>
+                        <div class="media">
+                            <a class="pull-left"
+                               href="{SITE_BASEURI}/noticia/<?= (isset($s->ncategoria_url)) ? "$s->ncategoria_url/$s->noticia_url" : "geral/$s->noticia_url" ?>/">
+                                <img
+                                    src="{SITE_BASEURI}/thumb.php?w=80&h=70&src=<?= Imagem:: get("midia/news", "$s->noticia_capa") ?>"
+                                    class="media-object" width="80" height="70" alt=""/>
+                            </a>
+
+                            <div class="media-body">
+                                <h4 class="media-heading"> <?= $s->noticia_titulo ?>
+                                    <small><?= $s->noticia_data ?></small>
+                                </h4>
+                                <?= Filter::cut($s->noticia_texto, 300, '...') ?> <br/>
+                                <small class="pull-right hide"
+                                       style="color: #999"><?= ($s->ncategoria_nome != "") ? "Categoria $s->ncategoria_nome" : "" ?></small>
+                            </div>
+                        </div>
+                        <br/>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <div class="row text-center">
+                    <?= $this->data['paginacao']; ?>
+                </div>
+            </div>
+        </div>
+        <?php require_once 'right_bar.phtml'; ?>
+    </div>
+</div>
+<?php require_once 'rodape.phtml'; ?>
+<script type="text/javascript">
+    $(function () {
+        $('#top-menu-noticia').addClass('active');
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+</body>
+</html>

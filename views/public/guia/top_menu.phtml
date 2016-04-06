@@ -1,0 +1,66 @@
+<div class="navbar navbar-inverse bs-docs-navs" role="banner">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">navegação</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav text-uppercase">
+                <li id="top-menu-home"><a href="{BASEURI}/"><i class="fa fa-home"></i>  Home</a></li>
+                <?php if (isset($this->data['area'])): ?>
+                    <?php foreach ($this->data['area'] as $a): ?>
+                        <?php if ($a->area_show == 1): ?>
+                            <?php if (isset($a->{'PAG'}[0])): ?>
+                                <li class="dropdown" id="url-area-<?= $a->area_id ?>">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="icon fa fa-file-text"></i> <?= $a->area_nome ?>
+                                        <i class="fa fa-angle-down parent-symbol"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <?php foreach ($a->{'PAG'} as $p): ?>
+                                            <li id="url-pagina-<?= $p->pagina_id ?>"><a  style="text-transform: none;" href="{SITE_BASEURI}/pagina/<?= $a->area_url ?>/<?= $p->pagina_url ?>/<?= $p->pagina_id ?>/"><?= $p->pagina_nome ?></a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                <?php if (isset($this->data['pag'][0])): ?>
+                    <?php foreach ($this->data['pag'] as $p): ?>
+                        <?php if (isset($p->{'pagina_url'})): ?>
+                            <li id="url-area-<?= $p->pagina_id ?>-<?= $p->pagina_url ?>"><a href="{SITE_BASEURI}/pagina/geral/<?= $p->{'pagina_url'} ?>/<?= $p->{'pagina_id'} ?>/"><i class="icon fa fa-home"></i><?= $p->{'pagina_nome'} ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                <li id="top-menu-categoria"><a href="{BASEURI}/categorias/"><i class="fa fa-folder"></i> Categorias</a></li>						
+                <li id="top-menu-noticia"><a href="{BASEURI}/noticia/"><i class="fa fa-paper-plane"></i>  Notícias</a></li>
+                <li id="top-menu-contato"><a href="{BASEURI}/contato/"><i class="fa fa-envelope"></i> Contato</a></li>
+                <?php if(isset($this->sessao) &&  $this->sessao->getNode('cliente_id')):?>
+                <li id="top-menu-editar"><a href="{BASEURI}/cadastro/editar/"><i class="fa fa-edit"></i> Editar Cadastro</a></li>								
+                <li id="top-menu-sair"><a href="{BASEURI}/cadastro/logout/"><i class="fa fa-circle-o-notch"></i> Sair</a></li>								
+                <?php else:?>
+                <li id="top-menu-entrar"><a href="{BASEURI}/cadastro/entrar/"><i class="fa fa-user"></i> Entrar / Login</a></li>
+                <?php endif;?>
+            </ul>
+            <ul <ul class="nav navbar-nav pull-right" style="margin-right: -15px">
+                <li id="top-menu-cadastro">
+                    <a href="{BASEURI}/cadastro/" class="btn btn-info-custom" style="color:#fff;"><i class="fa fa-plus-circle"></i> CADASTRE AQUI SUA EMPRESA OU SERVIÇO. É GRÁTIS!</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<script>
+    $('ul.nav li.dropdown').hover(function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+    }, function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+    });
+</script>

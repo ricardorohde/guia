@@ -1,0 +1,122 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+body {
+    font-family: 'Open Sans',sans-serif,helvetica,tahoma;
+    font-size: 13px;
+}
+table td{
+    vertical-align: middle !important;
+}
+
+@media (min-width: 37em) { } /* 592px */
+@media (min-width: 41em) { } /* 656px */
+@media (min-width: 47em) { } /* 752px */
+@media (min-width: 68em) { body{} }  /* 1088px notebook 14*/
+@media (min-width: 82em) { body{}} /* 1312px */
+@media (min-width: 100em) { body{}}  /* 1600px */
+
+.opacity-8{
+    opacity: .8;
+}
+.no-margin{
+    margin:0px !important;
+}
+.no-pad {
+    padding: 0 !important;
+}
+.pad-6 {
+    padding: 6px !important;
+}
+.pad-10 {
+    padding: 10px !important;
+}
+.border{
+    border:1px solid red;
+}
+.tbl-slide-list td{
+    max-height: 80px !important;
+    vertical-align: middle !important;
+}
+
+.galeria-foto-thumb imgs {
+    /*
+  filter: gray; 
+  -webkit-filter: grayscale(1); 
+    */
+    -webkit-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 6px 2px rgba(0,0,0,0.75);
+
+}
+
+.galeria-foto-thumb img:hover {
+    /*
+    filter: none; 
+    -webkit-filter: grayscale(0); 
+    */
+}
+
+.dragger tr{
+    cursor: move;
+}
+
+.text-upper{
+    text-transform: uppercase;
+    text-decoration: none !important;
+    font-size: 13px;
+}
+.text-upper i{
+     margin-right: 4px !important;
+}
+.menu-left *{
+    border:0px !important;
+}
+.menu-left .panel{
+    margin:0px !important;
+    margin-bottom:1px !important;
+}
+.menu-left .panel-body{
+    margin:0px !important;
+    padding: 0px !important;
+}
+.menu-left {
+    border:0px !important;
+    min-height: 100% !important;
+    height: 100% !important;
+}
+.menu-left i{
+    font-size: 17px !important;
+}
+.menu-left .panel-primary *{
+    border:0px !important;
+}
+.menu-left .panel-primary .panel-body .active{
+    opacity:.8;
+}
+.menu-left .panel-primary i{
+    margin-right: 6px;
+}
+.menu-left .panel-primary .panel-title a{
+    border: 0px solid red !important; 
+    display: block !important; 
+    width: 100% !important; 
+    padding: 2px !important; 
+}
+#panel-content .panel-heading h5{
+    font-size: 16px !important;
+    line-height: 16px !important;
+    /*color:#fff; */
+}
+
+
+/*FIM ADMIN TEMA*/
+
+/*
+.morris text{overflow:auto;height:100%;width:100%}
+.morris tspan{word-break:break-all;word-break: break-word;-webkit-hyphens: auto;
+   -moz-hyphens: auto;
+        hyphens: auto; word-wrap:break-word;}
+.morris text,tspan {
+    font-weight: normal !important;
+    font-size:12px !important;
+}
+*/

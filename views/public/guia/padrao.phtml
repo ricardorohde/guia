@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="keywords" content="{SITE_KEYWORDS}">
+        <meta name="author" content="{SITE_AUTOR}">
+        <title>{SITE_TITLE} - {SITE_SLOGAN}</title>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+        <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">    
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/main.css'>
+        <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+        <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <?php require_once 'top_bar.phtml'; ?>	
+        <?php require_once 'top_menu.phtml'; ?>	
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <?php require_once 'top_busca.phtml'; ?>
+                    <div class="main_content">
+                        <br />
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+                <?php require_once 'right_bar.phtml'; ?>
+            </div>			
+        </div>
+        <?php require_once 'rodape.phtml'; ?>
+        <script type="text/javascript">
+            $(function () {
+                $('#top-menu-categoria').addClass('active');
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    </body>	
+</html>

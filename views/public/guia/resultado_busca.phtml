@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{SITE_DESCRIPTION}">
+    <meta name="keywords" content="{SITE_KEYWORDS}">
+    <meta name="author" content="{SITE_AUTOR}">
+    <title>{SITE_TITLE} - {SITE_SLOGAN}</title>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/bootstrap.min.css'>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+    <link rel="stylesheet" href="{BASEURI}/assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/main.css'>
+    <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
+    <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<?php require_once 'top_bar.phtml'; ?>
+<?php require_once 'top_menu.phtml'; ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <?php require_once 'top_busca.phtml'; ?>
+            <div class="main_content">
+                <br/>
+                <div class="">
+                    <div class="form-groups product_listing">
+                        <?php if ($this->isMod('cliente')): ?>
+                            <?php if (isset($this->modulo['cliente']['data'])): ?>
+                                <h3 class="title">Resultados encontrados:</h3>
+                                <div class="row">
+                                    <?php foreach ($this->modulo['cliente']['data'] as $s): ?>
+                                        <div class="col-md-4 col-sm-12">
+                                            <div class="item"
+                                                 style="margin-bottom: 25px;border-bottom:1px solid #dcdcdc"
+                                                 data-placement="bottom"
+                                                 title="<?= $s->cliente_empresa ?> - <?= $s->cliente_nome ?>">
+                                                <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/">
+                                                    <img
+                                                        src="{SITE_BASEURI}/thumb.php?zc=0&h=200&w=250&src=<?= Imagem:: get("midia/cliente", "$s->cliente_logo") ?>"
+                                                        alt="" class="img-thumbnail img-responsive">
+                                                </a>
+
+                                                <div style="min-height: 60px !important;">
+                                                    <a href="{SITE_BASEURI}/encontre/<?= $s->grupo_url ?>/<?= $s->cliente_url ?>/"
+                                                       class="title"><?= $s->cliente_empresa ?></a><br/>
+                                                    <a href="{SITE_BASEURI}/encontre/em/<?= $s->grupo_url ?>/"
+                                                       class="subinfo"><?= $s->grupo_nome ?></a>
+                                                </div>
+                                                <div style="min-height: 55px !important;">
+                                                    <?= Filter::cut($s->cliente_info, 90, '...') ?> <br/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="">
+                                    <h3 class="title">Nenhum resultado encontrado, selecione uma categoria abaixo:</h3>
+
+                                    <?php if ($this->isMod('cliente')): ?>
+                                        <?php if (isset($this->modulo['cliente']['menu-lista'])): ?>
+                                            <?php $mod = 0; ?>
+                                            <?php $k = count($this->modulo['cliente']['menu-lista']) - 1; ?>
+                                            <?php foreach ($this->modulo['cliente']['menu-lista'] as $s): ?>
+                                                <?php if ($mod == 0): ?>
+                                                    <div class="row listing_sub_categories">
+                                                <?php endif; ?>
+                                                <div class="col-md-3"><a
+                                                        href="{SITE_BASEURI}/encontre/em/<?= $s->grupo_url ?>/">» <?= $s->grupo_nome ?></a>
+                                                </div>
+                                                <?php if ($mod == 3 || $k == 0): ?>
+                                                    <?php $mod = -1; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <?php $mod++; ?>
+                                                <?php $k--; ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <?php require_once 'right_bar.phtml'; ?>
+    </div>
+</div>
+<?php require_once 'rodape.phtml'; ?>
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+</body>
+</html>

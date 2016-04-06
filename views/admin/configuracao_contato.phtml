@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">        
+        <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">      
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-search"></i> &nbsp;  Localização e Dados para Contato &nbsp;
+                            <span id="hsp_produto_nome" class="hide">
+                                <i class="fa fa-angle-right"></i> 
+                            </span>
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i> 
+                            Configure os dados de contato de sua empresa.
+                        </small>
+                    </p>  
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <form action="{BASEURI}/painel/configuracao/contato/atualizar/" method="post" role="form" id="form-seo">
+
+                                <p class="alert alert-block alert-custom">
+                                    <i class="fa fa-envelope-o"></i>
+                                    Dados de Contato 
+                                </p>
+
+                                <div class="well well-sm">
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">E-mail</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Endereço de e-mail onde receberá os contatos vindos do site.</small>                                        
+                                        <input type="email" name="contato_email" id="contato_email" value="<?= $this->contato->contato_email ?>"
+                                               class="form-control" placeholder="Informe o e-mail de contato" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Telefone:</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Telefone Principal.</small>                                        
+                                        <input type="text" name="contato_fone" id="contato_fone" value="<?= $this->contato->contato_fone ?>"
+                                               class="form-control mask-tel" placeholder="Informe um telefone de contato" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Telefone:</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Telefone Secundário / Alternativo.</small>                                        
+                                        <input type="text" name="contato_fone1" id="contato_fone1" value="<?= $this->contato->contato_fone1 ?>"
+                                               class="form-control mask-tel" placeholder="Informe um telefone de contato" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Telefone Personalizado:</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Campo Livre ex:  (11) 777-555-666 (WhatsApp).</small>                                        
+                                        <input type="text" name="contato_fone2" id="contato_fone2" value="<?= $this->contato->contato_fone2 ?>"
+                                               class="form-control" placeholder="Informe um contato personalizado" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Telefone Personalizado:</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Campo Livre ex:  (11) 777-555-666 (Operadora X).</small>                                        
+                                        <input type="text" name="contato_fone3" id="contato_fone3" value="<?= $this->contato->contato_fone3 ?>"
+                                               class="form-control" placeholder="Informe um contato personalizado" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Telefone Personalizado:</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Campo Livre ex:  (11) 777-555-666 (Operadora X).</small>                                        
+                                        <input type="text" name="contato_fone4" id="contato_fone4" value="<?= $this->contato->contato_fone4 ?>"
+                                               class="form-control" placeholder="Informe um contato personalizado" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Telefone Personalizado:</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Campo Livre ex:  (11) 777-555-666 (Operadora X).</small>                                        
+                                        <input type="text" name="contato_fone5" id="contato_fone5" value="<?= $this->contato->contato_fone5 ?>"
+                                               class="form-control" placeholder="Informe um contato personalizado" />
+                                    </div>
+
+                                </div>
+
+                                <p class="alert alert-block alert-custom">
+                                    <i class="fa fa-map-marker"></i>
+                                    Localização 
+                                </p>
+                                <div class="well well-sm">
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Cep</label>
+
+                                        <small class="pull-right">
+                                            <a href="http://www.buscacep.correios.com.br/servicos/dnec/menuAction.do?Metodo=menuEndereco"
+                                               target="new" class="tip" title="Consultar CEP nos Correios">
+                                                <i class="fa fa-external-link"></i> Se não sabe o CEP, clique aqui para consultar.
+                                            </a>                                            
+                                        </small>                                        
+                                        <input type="text" name="contato_cep" id="contato_cep" value="<?= $this->contato->contato_cep ?>"
+                                               class="form-control mask-cep" placeholder="Informe o cep do endereço da empresa" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Endereço</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Nome da rua/av e número.</small>                                        
+                                        <input type="text" name="contato_endereco" id="contato_endereco" value="<?= $this->contato->contato_endereco ?>"
+                                               class="form-control" placeholder="Informe o endereço da empresa" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Complemento</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Complemento ex: Sala 15</small>                                        
+                                        <input type="text" name="contato_complemento" id="contato_complemento" value="<?= $this->contato->contato_complemento ?>"
+                                               class="form-control" placeholder="Informe o complemento do endereço" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Bairro</label>
+                                        <input type="text" name="contato_bairro" id="contato_bairro" value="<?= $this->contato->contato_bairro ?>"
+                                               class="form-control" placeholder="Informe o bairro onde está localizada a empresa" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Cidade</label>
+                                        <input type="text" name="contato_cidade" id="contato_cidade" value="<?= $this->contato->contato_cidade ?>"
+                                               class="form-control" placeholder="Informe a cidade onde está localizada a empresa" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Estado/UF</label>
+
+                                        <select name="contato_uf" id="contato_uf" class="form-control">
+                                            <option value="AC">AC</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AM">AM</option>
+                                            <option value="AP">AP</option>
+                                            <option value="BA">BA</option>
+                                            <option value="CE">CE</option>
+                                            <option value="DF">DF</option>
+                                            <option value="ES">ES</option>
+                                            <option value="GO">GO</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MG">MG</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MT">MT</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PB">PB</option>
+                                            <option value="PE">PE</option>
+                                            <option value="PI">PI</option>
+                                            <option value="PR">PR</option>
+                                            <option value="RJ">RJ</option>
+                                            <option value="RN">RN</option>
+                                            <option value="RO">RO</option>
+                                            <option value="RR">RR</option>
+                                            <option value="RS">RS</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SE">SE</option>
+                                            <option value="SP">SP</option>
+                                            <option value="TO">TO</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Latitude</label>
+                                        <input type="text" name="contato_lat" id="contato_lat" value="<?= $this->contato->contato_lat ?>"
+                                               class="form-control" placeholder="Informe a latitude para o mapa" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Longitude</label>
+                                        <input type="text" name="contato_lon" id="contato_lon" value="<?= $this->contato->contato_lon ?>"
+                                               class="form-control" placeholder="Informe a longitude para o mapa" />
+                                    </div>
+                                </div>
+
+                                <p class="text-center">
+                                    <button type="submit" class="btn btn-primary" id="btn-add-update">
+                                        <i class="fa fa-refresh"></i> <span>Atualizar Dados</span>
+                                    </button>
+                                </p>
+                            </form>                                
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="assets/vendor/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/jquery.mask.min.js"></script>
+        <script type="text/javascript" src="assets/js/admin/main.js"></script>
+        <script type="text/javascript" src="assets/vendor/notify/js/notifIt.js"></script>
+        <!--controller actions -->
+        <script type="text/javascript">setMenuAtivo('empresa');</script>		
+        <script type="text/javascript">
+            $('.mask-cep').mask('99999-999');
+            $('.mask-tel').mask('(99) 9999-9999');
+            $('.mask-cel').mask('(99) 999-999-999');
+            $('#contato_uf').val('<?= $this->contato->contato_uf ?>');
+            $('#contato_cep').on('keyup', function () {
+                if ($(this).val().length >= 8) {
+                    $('#contato_cep').trigger('change');
+                }
+            });
+            $('#contato_cep').on('change', function () {
+                var url = baseUri + '/cep/getcep/';
+                $.getJSON(url, {cep: $(this).val()}, function (data) {
+                    if (data.rs) {
+                        data = data.rs[0];
+                        $('#contato_bairro').val(data.bairro);
+                        $('#contato_cidade').val(data.cidade);
+                        $('#contato_uf').val(data.uf);
+                        $('#contato_endereco').val(data.endereco + ', Nº ').focus();
+                    }
+                });
+            });
+        </script>		
+        <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

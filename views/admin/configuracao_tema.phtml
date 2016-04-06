@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">        
+        <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">      
+        <link href="assets/vendor/fakeinput/fakeinput.css" rel="stylesheet" type="text/css">      
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-paint-brush"></i> &nbsp; Aparência e Temas &nbsp;
+                            <span id="hsp_produto_nome" class="hide">
+                                <i class="fa fa-angle-right"></i> 
+                            </span>
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i> 
+                            Alteração da aparência, tema e cores do site.
+                        </small>
+                    </p>  
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <form action="{BASEURI}/painel/configuracao/tema/atualizar/{TEMA}/" method="post"
+                                  role="form" id="form-tema">
+
+                                <p class="alert alert-block alert-custom">
+                                    <i class="fa fa-paint-brush"></i>
+                                    Temas e Cores
+                                </p>
+                                <div class="well well-sm" style="padding-bottom: 10px">
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Tema do Site</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Tema utilizado no site</small>                                        
+                                        <select name="site_template" id="site_template" class="form-control">
+                                            <?php foreach ($this->data['temas'] as $tema): ?>
+                                                <option value="<?= $tema->tema_dir ?>"><?= $tema->tema_nome ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                                <?php
+                                $temaconf = "$this->path_views/public/" . $this->site->getTemplateDir() . "/switch-color/admin.phtml";
+                                if (file_exists($temaconf)) {
+                                    require_once $temaconf;
+                                }
+                                ?>
+                                <p class="text-center">
+                                    <button type="submit" class="btn btn-primary" id="btn-add-update"><i class="fa fa-refresh"></i>
+                                        <span>Atualizar Configurações</span></button>
+                                </p>
+                            </form>    
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="assets/vendor/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/js/admin/main.js"></script>
+        <script type="text/javascript" src="assets/vendor/notify/js/notifIt.js"></script>  
+        <!--controller actions -->
+        <script type="text/javascript">
+            $('#skin-color div').on('click', function () {
+                var color = $(this).attr('id');
+                $('#site_template_skin').val(color)
+                $('#skin-color div').css('border', '0px');
+                $(this).css('border-bottom', '4px solid #000');
+            })
+
+            $('#site_template').on('change', function () {
+                window.location = "{BASEURI}/painel/configuracao/tema/" + $(this).val() + "/";
+            })
+
+        </script>		
+        <script type="text/javascript">$('#site_template_box').val('<?= $this->site->site_template_box ?>');</script>		
+        <script type="text/javascript">$('#site_template').val('<?= $this->site->getTemplate() ?>');</script>		
+        <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>		
+        <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

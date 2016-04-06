@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">        
+        <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">      
+        <link href="assets/vendor/fakeinput/fakeinput.css" rel="stylesheet" type="text/css">      
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <link href="assets/vendor/js-plugin/powerange/dist/powerange.css" rel="stylesheet" />
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-globe"></i> &nbsp; Informações sobre a empresa &nbsp;
+                            <span id="hsp_produto_nome" class="hide">
+                                <i class="fa fa-angle-right"></i> 
+                            </span>
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i> 
+                            Configure os detalhes do site como nome, logotipo, quem somos...
+                        </small>
+                    </p>  
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <form action="{BASEURI}/painel/configuracao/site/atualizar/" method="post" enctype="multipart/form-data"
+                                  role="form" id="form-site">
+                                <p class="alert alert-block alert-custom">
+                                    <i class="fa fa-globe"></i>
+                                    Informações básicas 
+                                </p>                                
+                                <div class="well well-sm">
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Nome do Empresa/Site</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Nome curto para o site ou nome da empresa.</small>
+                                        <input type="text" name="site_title" id="site_title" value="<?= $this->site->getTitle() ?>"
+                                               class="form-control" placeholder="Informe o título do site" />
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Slogan</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Frase curta aparecerá após o título do site.</small>                                        
+                                        <input type="text" name="site_slogan" id="site_slogan" value="<?= $this->site->getSlogan() ?>"
+                                               class="form-control" placeholder="Informe o slogan do site" />
+                                    </div>
+
+
+                                    <br />
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Logotipo</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Imagem PNG 
+                                            <br/><br/>
+                                            <img src="{BASEURI}/midia/layout/<?= $this->site->getLogo() ?>?v=<?= rand(200, 1000) ?>" class="img-responsive" style="height: 45px;" />
+                                        </small>                                        
+                                        <div class="fakeipt">
+                                            <div class="uploader black">
+                                                <input type="text" class="filename" readonly="readonly"/>
+                                                <input type="button" name="file" id="file" class="button" value="Selecionar Imagem"/>
+                                                <input type="file" name="site_logo" size="30"/>
+                                            </div>              
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Logotipo - margem/distância da esquerda (pixels)</label>                                    
+                                    </div>
+                                    <div class="col-md-6" style="padding-left: 25px">
+                                        <div class="slider-wrapper">
+                                            <input type="text" name="site_logo_x" id="site_logo_x" class="js-step" value="<?= $this->site->getLogoX() ?>"  />
+                                            <span id="logo_x" class="pull-right">Distância atual: <b>&nbsp;</b>  pixels</span>
+                                        </div>
+                                    </div>                                    
+                                    <br/> <br/> 
+
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label">Logotipo - margem/distância do topo (pixels)</label>                                    
+                                    </div>
+                                    <div class="col-md-6" style="padding-left: 25px">
+                                        <div class="slider-wrapper">
+                                            <input type="text" name="site_logo_y" id="site_logo_y" class="js-step" value="<?= $this->site->getLogoY() ?>"  /> 
+                                            <span id="logo_y" class="pull-right">Distância atual: <b>&nbsp;</b> pixels</span>
+                                        </div>
+                                    </div>                                    
+                                    <br/>
+                                </div>
+
+                                <!--
+                                <p class="alert alert-block alert-custom">
+                                    <i class="fa fa-globe"></i>
+                                    Quem Somos 
+                                </p>      
+
+                                <div class="well well-sm">                                
+                                    <div class="form-group has-feedback">
+                                        <label class="control-label"> &nbsp;</label>
+                                        <small class="pull-right"><i class="fa fa-info-circle"></i> Você pode arrastar imagens de seu computador para o editor! &nbsp; </small>
+                                        <textarea name="site_about" id="site_about" class="form-control summernote"
+                                                  placeholder="Descrição ou história da empresa"><?= $this->site->getSiteAbout() ?></textarea>
+                                    </div>
+                                </div>
+                                -->
+                                <br/> <br/> <br/> 
+                                <p class="text-center">
+                                    <button type="submit" class="btn btn-primary" id="btn-add-update"><i class="fa fa-refresh"></i>
+                                        <span>Atualizar Dados</span>
+                                    </button>
+                                </p>
+                            </form>                                
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="assets/vendor/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/fakeinput/fakeinput.js" ></script>        
+        <script type="text/javascript" src="assets/js/admin/main.js"></script>
+        <script type="text/javascript" src="assets/vendor/notify/js/notifIt.js"></script>
+        <script type="text/javascript" src="assets/js/admin/configuracao_site.js"></script>       
+        <script type="text/javascript" src="assets/vendor/js-plugin/powerange/dist/powerange.js"></script>                
+        <!-- summernote plugin -->
+        <link rel="stylesheet" href="plugins/summernote/dist/summernote.css">
+        <link rel="stylesheet" href="plugins/summernote/dist/summernote-bs3.css">
+        <script type="text/javascript" src="plugins/summernote/dist/summernote.js"></script>
+        <script type="text/javascript" src="plugins/summernote/lang/summernote-pt-BR.js"></script>
+        <!--controller actions -->
+        <script type="text/javascript">setMenuAtivo('configuracao');</script>		
+        <script type="text/javascript">
+            var stp = document.querySelector('#site_logo_x');
+            var initStp = new Powerange(stp, {min: -90, max: 30, callback: displayValueX, start: <?= $this->site->getLogoX() ?>, step: 1});
+            function displayValueX() {
+                $('#logo_x b').html(stp.value);
+            }
+
+            var stpy = document.querySelector('#site_logo_y');
+            var initStpy = new Powerange(stpy, {min: -30, max: 30, callback: displayValueY, start: <?= $this->site->getLogoY() ?>, step: 1});
+            function displayValueY() {
+                $('#logo_y b').html(stpy.value);
+            }
+
+        </script>		
+        <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

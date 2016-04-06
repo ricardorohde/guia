@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">        
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">        
+        <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">      
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+
+                <div class="navbar-fixed-bottom navbar-inverse hide toolbar-save bg-primary opacity-8">
+                    <div class="container-fluid">
+                        <div class="pull-left">
+                            <button class="btn btn-primary">
+                                <i class="fa fa-cog fa-spin fa-1x"></i>
+                            </button>
+                        </div>
+                        <div class="pull-right">
+                            <button id="trig-submit" type="button" class="btn btn-primary"><i class="fa fa-check-circle-o"></i> Gravar</button>                            
+                            <a href="{BASEURI}/painel/produto/" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Voltar para Produtoss</a>
+                            <button class="btn btn-primary go-to-top"><i class="fa fa-chevron-up"></i> Voltar ao Topo</button>
+                        </div>
+                    </div>
+                </div>   
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-cubes"></i> &nbsp; Produtos &nbsp;
+                            <span id="hsp_produto_nome" class="hide">
+                                <i class="fa fa-angle-right"></i> 
+                                <span id="sp_produto_nome"></span>
+                            </span>
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i> 
+                            Cadastre os produtos de seu catálogo!
+                        </small>
+                    </p>  
+                    <div class="panel-body">
+
+                        <p class="text-right">
+                            <a href="#lista" role="tab" data-toggle="tab" id="a-tab-lista" class="btn btn-primary hide">
+                                <i class="fa fa-bars"></i>  Listar Produtos
+                            </a>
+                            <a href="#novo" role="tab" data-toggle="tab" id="a-tab-edit" class="btn btn-primary"> 
+                                <i class="fa fa-plus-circle"></i> Novo Produto
+                            </a>
+                        </p>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="lista">
+                                <?php if (is_array($this->data) && isset($this->data[0])): ?>                              
+                                    <table class="table table-striped" id="table-list">
+                                        <thead>
+                                            <tr>
+                                                <th width="60">ID</th>
+                                                <th width="150">Código</th>
+                                                <th>Categoria</th>
+                                                <th>Produto</th>
+                                                <th>Acessos</th>
+                                                <th width="150"><i class="fa fa-cog"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="no-dragger">
+                                            <?php foreach ($this->data as $p): ?>
+                                                <tr id="li_<?= $p->produto_id; ?>">
+                                                    <td class="td-id"><?= $p->produto_id; ?></td>
+                                                    <td class="td-codigo"><?= $p->produto_codigo; ?></td>
+                                                    <td class="td-categoria"><?= $p->categoria_nome; ?></td>
+                                                    <td class="td-nome"><?= $p->produto_nome; ?></td>
+                                                    <td class="td-acessos"><?= $p->produto_click_uniq; ?></td>
+                                                    <td class="td-ctrl">
+                                                        <textarea class="hide" id="descricao_<?= $p->produto_id ?>"><?= $p->produto_descricao ?></textarea> 
+                                                        <a href="{BASEURI}/painel/produto/foto/<?= $p->produto_id; ?>/" class="btn btn-primary btn-sm tip" title="fotos"><i class="fa fa-picture-o"></i></a>
+                                                        <button type="button" class="btn btn-primary btn-sm tip btn-edit"
+                                                                id="<?= $p->produto_id; ?>" 
+                                                                name="<?= $p->produto_nome; ?>"  
+                                                                codigo="<?= $p->produto_codigo; ?>"  
+                                                                valor="<?= $p->produto_valor; ?>"  
+                                                                ativo="<?= $p->produto_ativo; ?>"  
+                                                                show="<?= $p->produto_show; ?>"  
+                                                                meta_desc="<?= $p->produto_meta_desc; ?>"  
+                                                                meta_key="<?= $p->produto_meta_keywords; ?>"  
+                                                                categoria="<?= $p->produto_categoria; ?>"  
+                                                                title="editar"><i class="fa fa-edit"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm tip btn-remove" 
+                                                                title="remover" id="<?= $p->produto_id; ?>">
+                                                            <i class="fa fa-trash-o"></i></button>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>                          
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center">
+                                        {PAGINACAO}
+                                    </div>
+                                <?php else: ?>                          
+                                    <p class="well well-sm">
+                                        <i class="fa fa-info-circle"></i> 
+                                        Você ainda não cadastrou nenhuma produto!
+                                    </p>
+                                <?php endif; ?>                          
+                            </div>
+                            <div class="tab-pane fade" id="novo">
+                                <form action="{BASEURI}/painel/produto/atualizar/" role="form" method="post" id="form-produto">
+                                    <input type="hidden" name="produto_id" id="produto_id"  />
+
+                                    <div class="well well-sm">
+
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">Categoria do Produto &nbsp;</label>
+                                            <select class="form-control" name="produto_categoria" id="produto_categoria">
+                                                <option value="">Selecione uma categoria...</option>
+                                                <?php foreach ($this->categorias as $c): ?>
+                                                    <option value="<?= $c->categoria_id ?>"><?= $c->categoria_nome ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">Nome do Produto &nbsp;</label>
+                                            <input type="text" name="produto_nome" id="produto_nome" class="form-control" placeholder="Informe o nome do produto" />
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">Código do Produto &nbsp;</label>
+                                            <input type="text" name="produto_codigo" id="produto_codigo" class="form-control" placeholder="Informe o código/referência do produto" />
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">Valor do Produto &nbsp;</label>
+                                            <input type="text" name="produto_valor" id="produto_valor" class="money form-control" placeholder="Informe o valor do produto (opcional)" />
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">Produto Ativo &nbsp;</label>
+                                            <select class="form-control" name="produto_ativo" id="produto_ativo">
+                                                <option value="">Selecione uma opção...</option>
+                                                <option value="0">Não</option>
+                                                <option value="1">Sim</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">Produto em Destaque &nbsp;</label>
+                                            <select class="form-control" name="produto_show" id="produto_show">
+                                                <option value="">Selecione uma opção...</option>
+                                                <option value="0">Não</option>
+                                                <option value="1">Sim</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <label>Palavras-chave (SEO - Opcional)</label>
+                                            <span class="pull-right"><small><i class="fa fa-info-circle"></i>  Meta Keywords - Máximo 156 caracteres</small></span>                                
+                                            <input type="text" class="form-control" name="produto_meta_keywords" id="produto_meta_keywords" value="<?= $this->data->produto_meta_keywords; ?>"
+                                                   placeholder="Informe as palavras-chave do produto" />
+                                        </div>                            
+
+                                        <div class="form-group has-feedback">
+                                            <label>Descrição breve (SEO - Opcional)</label>
+                                            <span class="pull-right"><small><i class="fa fa-info-circle"></i> Meta Description - Máximo 156 caracteres</small></span>
+                                            <input type="text" class="form-control" name="produto_meta_desc" maxlength="156" value="<?= $this->data->produto_meta_desc; ?>"
+                                                   id="produto_meta_desc" placeholder="Informe uma descrição breve de até 156 caracteres para o produto" />
+                                        </div> 
+
+                                        <div class="form-group has-feedback">
+                                            <label class="control-label">Descrição do Produto &nbsp;</label>
+                                            <small class="pull-right"><i class="fa fa-info-circle"></i> Você pode arrastar imagens de seu computador para o editor! &nbsp; </small>
+                                            <textarea name="produto_descricao" id="produto_descricao" class="form-control summernote" rows="6"
+                                                      placeholder="Breve descrição do produto"></textarea>
+                                        </div>
+                                        <p class="text-right">
+                                            <button type="submit" class="btn btn-primary" id="btn-add-update"><i class="fa fa-check-circle-o"></i> <span>Cadastrar</span></button>
+                                            <button type="button" class="btn btn-danger" id="btn-add-update-cancel"><i class="fa fa-times-circle-o"></i> Cancelar</button>
+                                        </p>
+                                    </div>
+                                </form>                                
+                            </div>                
+                        </div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="ModalRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Remover Produto</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Atenção!</h4>
+                        <p>
+                            Você está prestes à excluir um registro de forma permanente.<br />
+                            Deseja realmente executar este procedimento?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle-o"></i> Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btn-confirm-remove"><i class="fa fa-check-circle-o"></i> Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="assets/vendor/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/js/admin/main.js"></script>
+        <script type="text/javascript" src="assets/vendor/notify/js/notifIt.js"></script>
+        <script type="text/javascript" src="assets/vendor/jquery.mask.min.js"></script>
+        <script type="text/javascript" src="assets/js/admin/produto.js"></script>       
+        <!-- summernote plugin -->
+        <link rel="stylesheet" href="plugins/summernote/dist/summernote.css">
+        <link rel="stylesheet" href="plugins/summernote/dist/summernote-bs3.css">
+        <script type="text/javascript" src="plugins/summernote/dist/summernote.js"></script>
+        <script type="text/javascript" src="plugins/summernote/lang/summernote-pt-BR.js"></script>
+        <!--controller actions -->
+        <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>		
+        <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>
+        <script type="text/javascript">[FN_ONLOAD_TAB]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

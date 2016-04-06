@@ -1,0 +1,18 @@
+<link href="assets/vendor/gmap/map.css" rel="stylesheet" />
+<div id="map"></div>
+<div id="zoom_controle">
+    <div id="zoom_slider"><img src="assets/vendor/gmap/slider_zoom.png" width="44" height="28" /></div>
+    <div id="zoomOut" style="width:30px; cursor:pointer; float:left; height:23px;"></div>
+    <div id="zoomIn" style="width:30px; cursor:pointer; float:left; height:23px; margin-left:240px;"></div>
+    <div id="zoom_slider_1"></div>
+</div>
+<script>var baseUri = '{SITE_BASEURI}';</script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="assets/vendor/gmap/gmaps.js"></script>
+<script src="assets/vendor/gmap/markers.js"></script>
+<script src="assets/vendor/gmap/init.js"></script>
+<script src="assets/vendor/gmap/markerclusterer.js"></script>
+<script src="{SITE_TEMPLATE}/js/FiltroHomeSearch.js" ></script>
+<script>
+    mapInit('<?= $this->modulo['contato']['data']->{'contato_lat'} ?> ', '<?= $this->modulo['contato']['data']->{'contato_lon'} ?> ');
+</script>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/" >
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">        
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <link href="assets/vendor/fakeinput/fakeinput.css" rel="stylesheet" type="text/css">      
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?> 
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?> 
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin"> 
+                            <i class="fa fa-suitcase"></i> &nbsp; Clientes &nbsp;
+                            <i class="fa fa-angle-right"></i> &nbsp; Depoimentos
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i> 
+                            Registre o depoimento de seus depoimento_autors e parceiros para serem exibidos no site!
+                        </small>
+                    </p>                      
+                    <div class="panel-body">
+                        <p class="text-right">
+                            <a href="#lista" role="tab" data-toggle="tab" id="a-tab-lista" class="btn btn-primary hide">
+                                <i class="fa fa-bars"></i>  Listar Depoimentos
+                            </a>
+                            <a href="#novo" role="tab" data-toggle="tab" id="a-tab-edit" class="btn btn-primary"> 
+                                <i class="fa fa-plus-circle"></i> Novo Depoimento
+                            </a>
+                            <a href="#dep" role="tab" data-toggle="tab" id="a-tab-dep" class="btn btn-primary hide"> 
+                                <i class="fa fa-bars"></i>  Listar Depoimentos
+                            </a>
+                        </p>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="lista">
+                                <?php if (is_array($this->data)): ?>
+                                    <table class="table table-striped tbl-depoimento_autor-list" id="table-list">
+                                        <thead>
+                                            <tr>
+                                                <th>Empresa</th>
+                                                <th>Autor</th>
+                                                <th>Cargo</th>
+                                                <th>Status</th>
+                                                <th>Data</th>
+                                                <th width="100"><i class="fa fa-cog"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($this->data as $p): ?>
+                                                <tr id="tr_<?= $p->depoimento_autor_id; ?>">
+                                                    <td><?= $p->cliente_nome; ?></td>
+                                                    <td><?= $p->depoimento_autor; ?></td>
+                                                    <td><?= $p->depoimento_cargo; ?></td>
+                                                    <td><?= ($p->depoimento_status == 1) ? 'Habilitado' : 'Desabilitado'; ?></td>
+                                                    <td><?= date('d/m/Y H:s', strtotime($p->depoimento_data)) ?></td>
+                                                    <td>
+                                                        <button class="btn btn-primary btn-sm tip btn-edit" title="editar" type="button"
+                                                                id="<?= $p->depoimento_id; ?>" 
+                                                                foto="<?= ($p->depoimento_foto != "" ) ? $p->depoimento_foto : $p->depoimento_autor_logo; ?>" 
+                                                                autor="<?= $p->depoimento_autor; ?>" 
+                                                                cargo="<?= $p->depoimento_cargo; ?>" 
+                                                                status="<?= $p->depoimento_status; ?>" 
+                                                                cliente="<?= $p->depoimento_cliente; ?>" 
+                                                                data="<?= $p->depoimento_data; ?>" 
+                                                                texto="<?= $p->depoimento_texto; ?>">
+                                                            <i class="fa fa-edit"></i></button>
+                                                        <button class="btn btn-danger btn-sm tip btn-remove" title="remover" id="<?= $p->depoimento_id; ?>" name="<?= $p->depoimento_cliente; ?>"><i class="fa fa-trash-o"></i></button>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>                          
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center">
+                                        {PAGINACAO}
+                                    </div>                                
+                                <?php else: ?>                          
+                                    <p class="well well-sm">
+                                        <i class="fa fa-info-circle"></i> 
+                                        Você ainda não cadastrou nenhum depoimento_autor!
+                                    </p>
+                                <?php endif; ?>    
+                            </div>
+
+                            <div class="tab-pane fade" id="novo">
+                                <form action="{BASEURI}/painel/depoimento/atualizar/" enctype="multipart/form-data"
+                                      role="form" method="post" id="form-depoimento_autor" >
+
+                                    <div class="form-group well well-sm">
+                                        <label for="depoimento_cliente">Empresa</label>
+                                        <select name="depoimento_cliente" id="depoimento_cliente" class="form-control" required>
+                                            <option value="">Selecione um cliente...</option>
+                                            <?php foreach ($this->cliente as $c): ?>
+                                                <option value="<?= $c->cliente_id ?>"><?= $c->cliente_id ?> - <?= $c->cliente_nome ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="depoimento_autor">Autor do Depoimento</label>
+                                        <input type="text" name="depoimento_autor" id="depoimento_autor" class="form-control" placeholder="Informe o nome do contato responsável" required />
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="depoimento_cargo">Cargo do Autor</label>
+                                        <input type="text" name="depoimento_cargo" id="depoimento_cargo" class="form-control" placeholder="Informe o cargo do autor na empresa" required />
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="depoimento_texto">Depoimento (máximo 300 caracteres)</label>
+                                        <textarea name="depoimento_texto" id="depoimento_texto"  rows="4" class="form-control" placeholder="Digite o depoimento do cliente" maxlength="300" required></textarea>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="depoimento_status">Status</label>
+                                        <select name="depoimento_status" id="depoimento_status" class="form-control" required>
+                                            <option value="">Selecione o status do depoimento...</option>
+                                            <option value="0">Desabilitado</option>
+                                            <option value="1">Habilitado</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group form-inline well well-sm">
+                                        <label>Foto do Autor(Opcional)</label>
+                                        <div class="fakeipt">
+                                            <div class="uploader black">
+                                                <input type="text" class="filename" readonly="readonly"/>
+                                                <input type="button" name="file" id="file" class="button" value="Selecionar Imagem"/>
+                                                <input type="file" name="filedata" id="filedata" size="30"/>
+                                            </div>
+                                            <div class="pull-right hide" id="slide-preview">
+                                                <img src="{BASEURI}/midia/depoimento_autor/nopic.png" class="img-thumbnail" style="margin-top: -25px;width:140px; height: 75px;"/>
+                                            </div>                                              
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-right">
+                                            <button type="submit" class="btn btn-primary" id="btn-add-update"><i class="fa fa-plus-circle"></i> <span id="btn-add-update-cliente">Gravar</span></button>
+                                            <button type="button" class="btn btn-danger" id="btn-add-update-cancel"><i class="fa fa-times-circle-o"></i> <span>Cancelar</span></button>
+                                        </p>
+                                    </div>
+                                    <input type="hidden" name="depoimento_id" id="depoimento_id"  value=""/>
+                                </form>      
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+            <div class="modal fade" id="ModalRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Remover Depoimento</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Atenção!</h4>
+                            <p>
+                                Você está prestes à excluir um registro de forma permanente.<br />
+                                Deseja realmente executar este procedimento?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle-o"></i> Cancelar</button>
+                            <button type="button" class="btn btn-danger" id="btn-confirm-remove"><i class="fa fa-check-circle-o"></i> Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="assets/vendor/jquery-1.11.0.min.js" type="text/javascript"></script>
+            <script src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="assets/js/admin/main.js" type="text/javascript"></script>
+            <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>
+            <script src="assets/vendor/jquery.mask.min.js" type="text/javascript"></script>
+            <script src="assets/js/admin/depoimento.js"></script>
+            <script src="assets/vendor/fakeinput/fakeinput.js" type="text/javascript"></script>
+            <script src="assets/vendor/notify/js/notifIt.js" type="text/javascript"></script>
+            <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">     
+            <script type="text/javascript">[FN_ONLOAD]/*executa funcoes js vindas do controller */</script>   
+            <script type="text/javascript">[FN_ONLOAD_TAB]/*executa funcoes js vindas do controller */</script>
+    </body>
+</html>

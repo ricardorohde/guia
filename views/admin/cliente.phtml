@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{SITE_DESCRIPTION}">
+        <meta name="author" content="{SITE_DESCRIPTION} desenvolvido por WEB4ALL">
+        <base href="{BASEURI}/">
+        <title>{SITE_TITLE} - Painel Administrativo</title>
+        <link href="assets/vendor/bootstrap-3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-3.2.0/css/{SITE_TEMA}/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="assets/css/admin/main.css" rel="stylesheet">
+        <!-- <link href="assets/css/admin/tabs.css" rel="stylesheet"> -->
+        <link href="assets/vendor/fakeinput/fakeinput.css" rel="stylesheet" type="text/css">
+        <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrap">
+            <?php require_once 'topo_alt.html'; ?>
+            <div class="col-md-2 col-lg-2 col-sm-3 col-xs-12 pad-1" id="side-bar">
+                <?php require_once 'menu.phtml'; ?>
+            </div>
+            <div class="col-md-10 col-lg-10 col-sm-9 col-xs-12 pad-1" id="panel-content">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="no-margin">
+                            <i class="fa fa-suitcase"></i> &nbsp; Clientes &nbsp;
+                            <i class="fa fa-angle-right"></i> &nbsp; Lista
+                        </h5>
+                    </div>
+                    <p class="well well-xs pad-10 fadeables" data-time="10000" id="elm-01">
+                        <small>
+                            <i class="fa fa-life-ring"></i>
+                            Cadastre seus clientes e parceiros para serem exibidos no site!
+                        </small>
+                    </p>
+                    <div class="panel-body">
+                        <p class="text-right">
+                            <a href="#lista" role="tab" data-toggle="tab" id="a-tab-lista" class="btn btn-primary hide">
+                                <i class="fa fa-bars"></i> Listar Clientes
+                            </a>
+                            <a href="#novo" role="tab" data-toggle="tab" id="a-tab-edit" class="btn btn-primary">
+                                <i class="fa fa-plus-circle"></i> Novo Cliente
+                            </a>
+                        </p>
+
+                        <div class="row form-busca">
+                            <form class="form-inline" action="" method="post">
+                                <div class="col-md-8">
+                                    <div class="form-group col-md-8">
+                                        <div class="input-group col-md-8">
+                                            <input class="form-control" type="text" name="busca" id="busca"
+                                                   placeholder="Pesquisar Clientes "/>
+                                        </div>
+                                        <button class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <br/><br/>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="lista">
+                                <?php if (is_array($this->data)): ?>
+                                    <table class="table table-striped tbl-cliente-list" id="table-list">
+                                        <thead>
+                                            <tr>
+                                                <th width="150">Logo</th>
+                                                <th>Cliente</th>
+                                                <th>Grupo</th>
+                                                <th>Status</th>
+                                                <th>Vip</th>
+                                                <th>Visitas</th>
+                                                <th width="100"><i class="fa fa-cog"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($this->data as $p): ?>
+                                                <tr id="tr_<?= $p->cliente_id; ?>">
+                                                    <td><img
+                                                            src="midia/cliente/<?= ($p->cliente_logo != "") ? $p->cliente_logo : 'nopic.png'; ?>"
+                                                            style="width:100px;height: 70px;"/></td>
+                                                    <td><?= $p->cliente_empresa; ?></td>
+                                                    <td><?= $p->grupo_nome; ?></td>
+                                                    <td><?= ($p->cliente_status == 2) ? '<span class="label label-success">Ativo</span>' : '<span class="label label-warning">Pendente</span>'; ?></td>
+                                                    <td><?= ($p->cliente_tipo == '1') ? '<i class="fa fa-star-o"></i>' : '<i class="fa fa-star"></i>'; ?></td>
+                                                    <td><?= $p->cliente_click_uniq; ?></td>
+                                                    <td>
+
+                                                        <textarea class="hide" name="cliente_info_x"
+                                                                  id="cliente_info_<?= $p->cliente_id; ?>"><?= ($p->cliente_info); ?></textarea>
+                                                        <a class="btn btn-primary btn-sm tip btn-edit" title="editar"
+                                                           href="{BASEURI}/painel/cliente/editar/<?= $p->cliente_id; ?>/"><i
+                                                                class="fa fa-edit"></i></a>
+                                                        <button class="btn btn-danger btn-sm tip btn-remove" title="remover"
+                                                                id="<?= $p->cliente_id; ?>" name="<?= $p->cliente_nome; ?>"><i
+                                                                class="fa fa-trash-o"></i></button>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center">
+                                        {PAGINACAO}
+                                    </div>
+                                <?php else: ?>
+                                    <p class="well well-sm">
+                                        <i class="fa fa-info-circle"></i>
+                                        Você ainda não cadastrou nenhum cliente!
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="tab-pane fade" id="novo">
+                                <form action="{BASEURI}/painel/cliente/atualizar/" enctype="multipart/form-data"
+                                      role="form" method="post" id="form-cliente">
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_tipo">Perfil do cliente</label>
+                                        <select name="cliente_tipo" id="cliente_tipo" class="form-control" required>
+                                            <option value="">Selecione um perfil...</option>
+                                            <option value="1">Anunciante Comum</option>
+                                            <option value="2">VIP</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_grupo">Grupo / Categoria</label>
+                                        <select name="cliente_grupo" id="cliente_grupo" class="form-control" required>
+                                            <option value="0">Selecione um grupo...</option>
+                                            <?php if (isset($this->grupo)): ?>
+                                                <?php foreach ($this->grupo as $s): ?>
+                                                    <option value="<?= $s->grupo_id ?>"><?= $s->grupo_nome ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_empresa">Nome da Empresa</label>
+                                        <input type="text" name="cliente_empresa" id="cliente_empresa" class="form-control"
+                                               placeholder="Informe o nome da empresa"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_nome">Slogan (opcional - até 150 caracteres)</label>
+                                        <input type="text" name="cliente_nome" id="cliente_nome" class="form-control"
+                                               placeholder="Informe o nome do contato" maxlength="150"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_nome">Palavras-chave (até 150 caracteres separados por vírgula ex:
+                                            pizza, delivery, etc..)</label>
+                                        <input type="text" name="cliente_meta_keywords" id="cliente_meta_keywords"
+                                               class="form-control"
+                                               placeholder="Palavras-chave para buscas ex: pizzaria, delivery, fast food"
+                                               maxlength="150"/>
+                                    </div>
+
+                                    <!--
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_nome">Slogan da empresa</label>
+                                        <input type="text" name="cliente_nome" id="cliente_nome" class="form-control" placeholder="Slogan da empresa (máx. 40 caracters)" />
+                                    </div>
+                                    -->
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_fone">Telefone 01</label>
+                                        <input type="text" name="cliente_fone" id="cliente_fone" class="fone form-control"
+                                               placeholder="Informe um número de telefone"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_fone2">Telefone 02</label>
+                                        <input type="text" name="cliente_fone2" id="cliente_fone2" class="fone form-control"
+                                               placeholder="Informe um número de telefone"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_site">Site</label>
+                                        <input type="text" name="cliente_site" id="cliente_site" class="form-control"
+                                               placeholder="Informe o link do site"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_cep">CEP</label>
+                                        <input type="text" name="cliente_cep" id="cliente_cep" class="cep form-control"
+                                               placeholder="Informe o cep do local"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_endereco">Endereco</label>
+                                        <input type="text" name="cliente_endereco" id="cliente_endereco" class="form-control"
+                                               placeholder="Informe o endereço ex: Avenida Brasil"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_num">Número</label>
+                                        <input type="text" name="cliente_num" id="cliente_num" class="form-control"
+                                               placeholder="Informe o número do local ex: 100"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_complemento">Complemento</label>
+                                        <input type="text" name="cliente_complemento" id="cliente_complemento"
+                                               class="form-control"
+                                               placeholder="Informe o complemento ex: 10º Andar - Sala 2 "/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_bairro">Bairro</label>
+                                        <input type="text" name="cliente_bairro" id="cliente_bairro" class="form-control"
+                                               placeholder="Informe o bairro"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_cidade">Cidade</label>
+                                        <input type="text" name="cliente_cidade" id="cliente_cidade" class="form-control"
+                                               placeholder="Informe o endereço completo ex: São Paulo"/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_uf">UF/Estado</label>
+                                        <select class="form-control" name="cliente_uf" id="cliente_uf">
+                                            <option value="AC">AC</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AM">AM</option>
+                                            <option value="AP">AP</option>
+                                            <option value="BA">BA</option>
+                                            <option value="CE">CE</option>
+                                            <option value="DF">DF</option>
+                                            <option value="ES">ES</option>
+                                            <option value="GO">GO</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MG">MG</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MT">MT</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PB">PB</option>
+                                            <option value="PE">PE</option>
+                                            <option value="PI">PI</option>
+                                            <option value="PR">PR</option>
+                                            <option value="RJ">RJ</option>
+                                            <option value="RN">RN</option>
+                                            <option value="RO">RO</option>
+                                            <option value="RR">RR</option>
+                                            <option value="RS">RS</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SE">SE</option>
+                                            <option value="SP">SP</option>
+                                            <option value="TO">TO</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group form-inline well well-sm">
+                                        <label>Logo do Cliente </label>
+
+                                        <div class="fakeipt">
+                                            <div class="uploader black">
+                                                <input type="text" class="filename" readonly="readonly"/>
+                                                <input type="button" name="file" id="file" class="button"
+                                                       value="Selecionar Imagem"/>
+                                                <input type="file" name="filedata" id="filedata" size="30"/>
+                                            </div>
+                                            <div class="pull-right hide" id="slide-preview">
+                                                <img src="{BASEURI}/midia/cliente/nopic.png" class="img-thumbnail"
+                                                     style="margin-top: -25px;width:140px; height: 75px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_info">Descrição (máximo 1000 caracteres)</label>
+                                        <textarea name="cliente_info" id="cliente_info" rows="8" class="form-control"
+                                                  placeholder="Descrição dos serviços prestados" maxlength="1000"
+                                                  required></textarea>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_email">E-mail</label>
+                                        <input type="email" name="cliente_email" id="cliente_email" class="form-control" placeholder="Informe um endereço de e-mail"  required/>
+                                    </div>
+
+                                    <div class="form-group well well-sm">
+                                        <label for="cliente_senha">Senha</label>
+                                        <div id="div-pass">
+                                            <input type="password" name="cliente_senha" id="cliente_senha" class="form-control" placeholder="Informe uma senha para sua conta"  pattern=".{6,}" minlength="6" required/>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-right">
+                                            <button type="submit" class="btn btn-primary" id="btn-add-update"><i
+                                                    class="fa fa-plus-circle"></i> <span
+                                                    id="btn-add-update-cliente">Gravar</span></button>
+                                            <button type="button" class="btn btn-danger" id="btn-add-update-cancel"><i
+                                                    class="fa fa-times-circle-o"></i> <span>Cancelar</span></button>
+                                        </p>
+                                    </div>
+                                    <input type="hidden" name="cliente_id" id="cliente_id" value=""/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="ModalRemove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Remover Cliente</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Atenção!</h4>
+
+                            <p>
+                                Você está prestes à excluir um registro de forma permanente.<br/>
+                                Deseja realmente executar este procedimento?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i
+                                    class="fa fa-times-circle-o"></i> Cancelar
+                            </button>
+                            <button type="button" class="btn btn-danger" id="btn-confirm-remove"><i
+                                    class="fa fa-check-circle-o"></i> Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="assets/vendor/jquery-1.11.0.min.js" type="text/javascript"></script>
+            <script src="assets/vendor/bootstrap-3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="assets/js/admin/main.js" type="text/javascript"></script>
+            <script type="text/javascript">setMenuAtivo('{MENU_ATIVO}');</script>
+            <script src="assets/vendor/jquery.mask.min.js" type="text/javascript"></script>
+            <script src="assets/js/admin/cliente.js"></script>
+            <script src="assets/vendor/fakeinput/fakeinput.js" type="text/javascript"></script>
+            <script src="assets/vendor/notify/js/notifIt.js" type="text/javascript"></script>
+            <link href="assets/vendor/notify/css/notifIt.css" rel="stylesheet" type="text/css">
+            <script type="text/javascript">[FN_ONLOAD]
+                /*executa funcoes js vindas do controller */</script>
+            <script type="text/javascript">[FN_ONLOAD_TAB]
+                /*executa funcoes js vindas do controller */</script>
+            <script src="{BASEURI}/assets/vendor/jquery.mask.min.js" type="text/javascript"></script>
+            <script type="text/javascript">
+                        $(function () {
+                            $('#cliente_cep').mask('99999-999');
+                            $('#cliente_cep').on('change', function () {
+                                var url = '{BASEURI}/cep/getcep/?cep=' + $.trim($(this).val());
+                                $.getJSON(url, {}, function (data) {
+                                    if (data != -1) {
+                                        $('#cliente_endereco').val(data.rs[0].endereco);
+                                        $('#cliente_bairro').val(data.rs[0].bairro);
+                                        $('#cliente_cidade').val(data.rs[0].cidade);
+                                        $('#cliente_uf').val(data.rs[0].uf);
+                                        $('#cliente_num').focus();
+                                    }
+                                });
+                            });
+                        });
+            </script>
+    </body>
+</html>

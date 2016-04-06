@@ -1,0 +1,125 @@
+<div class="col-md-3">
+    <h3 class="title nm">NAVEGUE POR CATEGORIA</h3>
+
+    <div class="panel-group right-col" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background: #428BCA;">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <span class="text-uppercase" style="color: white;font-size: 12px">
+                        <i class="fa fa-folder"></i> Encontre aqui
+                    </span>
+                </a>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <ul class="nav nav-pills nav-stacked">
+                        <?php if ($this->isMod('cliente')): ?>
+                            <?php if (isset($this->modulo['cliente']['menu-right'])): ?>
+                                <?php foreach ($this->modulo['cliente']['menu-right'] as $s): ?>
+                                    <a class="btn-block" href="{SITE_BASEURI}/encontre/em/<?= $s->grupo_url ?>/">
+                                        » <?= $s->grupo_nome ?></a>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <li><a href="{SITE_BASEURI}/categorias/"> »» Veja todas as categorias</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p>&nbsp;</p>
+    <?php if ($this->isMod('slideshow')): ?>
+        <h3 class="title nmb">EMPRESAS EM DESTAQUE</h3>
+        <div class="reviews-item">
+            <div class="row">
+                <?php if (isset($this->modulo['slideshow']['banner'][0])): ?>
+                    <?php foreach ($this->modulo['slideshow']['banner'] as $s): ?>
+                        <?php if ($s->slide_local == 2): ?>
+                            <?php if (file_exists("midia/banner/$s->slide_url")): ?>
+                                <div class="col-md-12  col-sm-12">
+                                    <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                    <a href="<?= Filter::trim_str($s->slide_link) ?>" target="_blank">
+                                        <?php endif; ?>
+                                        <img
+                                            src="{SITE_BASEURI}/thumb.php?zc=0&w=270&h=220&src=<?= Imagem:: get("midia/banner", "$s->slide_url") ?>"
+                                            class="img-responsive" alt=""/>
+                                        <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                    </a>
+                                <?php endif; ?>
+                                </div>
+                                <p>&nbsp;</p>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <p>&nbsp;</p>
+    <?php if ($this->isMod('slideshow')): ?>
+        <h3 class="title nmb">PARCEIROS</h3>
+        <div class="reviews-item">
+            <div class="row">
+                <?php if (isset($this->modulo['slideshow']['banner'][0])): ?>
+                    <?php foreach ($this->modulo['slideshow']['banner'] as $s): ?>
+                        <?php if ($s->slide_local == 3): ?>
+                            <?php if (file_exists("midia/banner/$s->slide_url")): ?>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                    <a href="<?= Filter::trim_str($s->slide_link) ?>" target="_blank">
+                                        <?php endif; ?>
+                                        <img
+                                            src="{SITE_BASEURI}/thumb.php?zc=0&w=270&h=220&src=<?= Imagem:: get("midia/banner", "$s->slide_url") ?>"
+                                            class="img-responsive" alt=""/>
+                                        <?php if (Filter::trim_str($s->slide_link) != ""): ?>
+                                    </a>
+                                <?php endif; ?>
+                                </div>
+                                <p>&nbsp;</p>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($this->isMod('facebook')): ?>
+        <!-- Modulo facebook-->
+        <br/><br/>
+        <h3 class="title nm text-uppercase"><?= $this->modulo['facebook']['config']->{'titulo'} ?></h3>
+        <div class="row">
+            <?php if (isset($this->modulo['facebook']['config']->{'app_id'})): ?>
+                <div id="fb-root"></div>
+                <div class="col-md-3" id="facebook-box">
+                    <div class="fb-like-box"
+                         data-href="<?= $this->modulo['facebook']['config']->{'app_link'} ?>"
+                         data-width="265"
+                         data-show-faces="true"
+                         data-header="false"
+                         data-stream="false"
+                         data-colorscheme="dark"
+                         data-show-border="false">
+                    </div>
+                </div>
+                <script>
+                    //window.onload = function () {
+                    //$('.fb-like-box').removeAttr('data-width');
+                    //$('.fb-like-box').attr('data-width', $('#facebook-box').width() - 5 + 'px');
+                    (function (d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id))
+                            return;
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=<?= $this->modulo['facebook']['config']->{'app_id'} ?>";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+                    //};
+                </script>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>
