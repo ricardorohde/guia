@@ -68,6 +68,7 @@ class ImageUploader {
     }
 
   public function doImageUpload(){
+    echo "<script> console.log(1111); </script>";
     if (!empty($_FILES)) {
         $tempFile = $_FILES['file']['tmp_name'];
         $targetPath = dirname( __FILE__ ) . $this->ds. $this->storeFolder . $this->ds;
@@ -92,8 +93,11 @@ class ImageUploader {
   }
 
   // Retorna as imagens vinculadas ao produto (da Promoção) com ID informado
-  public function getImagesByProduto($produtoID){
-    $sql = "SELECT filename, fileext FROM z_produto_foto WHERE z_produto_id = :z_produto_id";
+  public function getImagesByProduto($produtoID = 0){
+    // se não veio $produtoID passado por parâmetro no método então eu busco no $_POST (pode ser um AJAX)
+    //!isset($produtoID) ? isset($_POST['produtoID']) ? $produtoID = $_POST['produtoID'] : 0;
+
+    $sql = "SELECT id, filename, fileext FROM z_produto_foto WHERE z_produto_id = :z_produto_id";
 
     $stmt = $this->zimaconn->prepare($sql);
     $stmt->bindValue(':z_produto_id', $produtoID);
@@ -105,11 +109,39 @@ class ImageUploader {
       while($row = $stmt->fetch(PDO::FETCH_OBJ)){
         $images[] = array(
           'filename' => $row->filename,
-          'fileext' => $row->fileext
+          'fileext' => $row->fileext,
+          'id' => $row->id
         );
       }
     }
     return $images;
+  }
+
+  // Parâmetros: ID da imagem no banco e o nome do arquivo na pasta de upload vem por AJAX/POST
+  public function deleteImage(){
+    if (isset($_POST['fotoID']) && isset($_POST['fileNameExt'])){
+      $fotoID = $_POST['fotoID'];
+      $fileNameExt = $_POST['fileNameExt'];
+
+      // se o arquivo existir na pasta, removo da pasta e do banco
+      if (is_file($this->storeFolder.$this->ds.$fileNameExt)){
+        try {
+
+          // removendo do banco
+          $sql = "DELETE FROM z_produto_foto WHERE id = :id";
+          $stmt = $this->zimaconn->prepare($sql);
+          $stmt->bindValue(':id', $fotoID);
+          $stmt->execute();
+
+          // removendo da pasta assets/images/promo
+          unlink($this->storeFolder.$this->ds.$fileNameExt);
+        } catch (Exception $e) {
+          echo $e.getMessage();
+        }
+      }
+    } else {
+      header("HTTP/1.0 403 Forbidden");
+    }
   }
 }
 ?>

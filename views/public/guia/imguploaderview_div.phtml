@@ -5,13 +5,56 @@
 
       $fotos = $imageUploader->getImagesByProduto(2);
 
-      if (!empty($fotos) && count($fotos) > 1){
+      if (!empty($fotos) && count($fotos) > 0){
         foreach ($fotos as $value) {
           $filename = $value['filename'];
           $fileext = $value['fileext'];
+          $fotoID = $value['id'];
 
+          echo "<div id='div".$fotoID.$filename.$fileext."'>";
           echo "<img src=" . 'http://localhost/guiafacil/assets/images/promo/' . $filename . "." . $fileext . ">";
+          echo "<br>";
+          echo "<input type='button' class='button-delete-image' value='Remover imagem' id='".$fotoID."/".$filename.'.'.$fileext."'></input>";
+          echo "<br>";
+          echo "<br>";
+          echo "</div>";
         }
       }
     ?>
 </div>
+
+<script>
+$(document).ready(function(){
+  $('.button-delete-image').map(function(){
+        $(this).click(function(e){
+          e.preventDefault();
+
+          var fotoID = $(this).attr('id').split('/')[0];
+          var fileNameExt = $(this).attr('id').split('/')[1];
+          var divID = "#div"+fotoID+fileNameExt.replace('.',''); //ID da div para fazer um hide depois de deletar.
+          console.log('File ID: ' + fotoID);
+          console.log('Filename: ' + fileNameExt);
+          console.log('divID: ' + divID);
+
+          var url = "http://localhost/guiafacil/ImageUploader/deleteImage";
+
+          var callbackSuccess = function(divID){
+            $.notify("Imagem removida com sucesso", "success");
+            $(divID).hide("slow"); //ATENÇÃO COM OS SELETORES: #MEU_ID.CONTINUACAO_DO_NOME É INTERPRETADO COM #id E .CLASSE
+          }
+
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+              'fotoID': fotoID,
+              'fileNameExt': fileNameExt
+            },
+            cache: false,
+            success: callbackSuccess(divID),
+            error: function(xhr, status, error){$.notify("Não foi possível remover a imagem. Tente novamente.", "error")}
+          });
+        });
+  });
+});
+</script>

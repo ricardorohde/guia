@@ -1,18 +1,18 @@
 <div id="imguploader">
-  <script src="{SITE_TEMPLATE}/js/dropzone.js"></script>
-  <link href="{SITE_TEMPLATE}/css/dropzone.css" type="text/css" rel="stylesheet" />
   <script>
   // Initialise DropZone form control
   // dropzoneForm = the id of your dropzone form
-  Dropzone.options.dropzoneform = {
-      maxFilesize: 10, // Mb
-      init: function () {
-          // Set up any event handlers
-          this.on('queuecomplete', function () {
-              window.location = 'http://localhost/guiafacil/';
-          });
-      }
-  };
+  $(document).ready(function(){
+    Dropzone.options.dropzoneform = {
+        maxFilesize: 10, // Mb
+        init: function () {
+            // Set up any event handlers
+            this.on('queuecomplete', function () {
+                window.location = 'http://localhost/guiafacil/cadastro';
+            });
+        }
+    };
+  });
   </script>
-    <form action="http://localhost/guiafacil/imageuploader/doImageUpload" class="dropzone" id="dropzoneform"></form>
+  <form action="{BASEURI}/ImageUploader/doImageUpload" class="dropzone" id="dropzoneform"></form>
 </div>
