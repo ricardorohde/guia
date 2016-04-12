@@ -4,17 +4,37 @@
       $imageUploader = new ImageUploader();
 
       $fotos = $imageUploader->getImagesByProduto(2);
+      $idInputHelper = 0;
 
       if (!empty($fotos) && count($fotos) > 0){
         foreach ($fotos as $value) {
+          // para gerar um ID html único a cada loop
+          $idInputHelper++;
+
           $filename = $value['filename'];
           $fileext = $value['fileext'];
           $fotoID = $value['id'];
+          $titulo = $value['titulo'];
 
-          echo "<div id='div".$fotoID.$filename.$fileext."'>";
+          // padrão: incrementa/idFoto/fileNameFileExt
+          // Ex: 3/2/a8732888hsdpng
+          $inputID = $fotoID."-".$filename."-".$fileext;
+
+          echo "<div id='div".$fotoID."'>";
+          $idInputHelper++; //usou, incrementa
+
           echo "<img src=" . 'http://localhost/guiafacil/assets/images/promo/' . $filename . "." . $fileext . ">";
           echo "<br>";
-          echo "<input type='button' class='button-delete-image' value='Remover imagem' id='".$fotoID."/".$filename.'.'.$fileext."'></input>";
+
+          $ID = $idInputHelper."-".$inputID;
+          echo "<input type='text' name='titulo' id='input".$ID."' value='$titulo' />";
+          echo "<input type='button' class='button-update-title' value='Salvar' id='$ID'></input>";
+
+          echo "<br>";
+          echo "<br>";
+          $ID = $idInputHelper."-".$inputID;
+          echo "<input type='button' class='button-delete-image' value='Remover imagem' id='input".$ID."'></input>";
+
           echo "<br>";
           echo "<br>";
           echo "</div>";
@@ -29,16 +49,22 @@ $(document).ready(function(){
         $(this).click(function(e){
           e.preventDefault();
 
-          var fotoID = $(this).attr('id').split('/')[0];
-          var fileNameExt = $(this).attr('id').split('/')[1];
-          var divID = "#div"+fotoID+fileNameExt.replace('.',''); //ID da div para fazer um hide depois de deletar.
+          var fotoID = $(this).attr('id').split('-')[1];
+          var divID = "#div"+fotoID;
+          var fileName = $(this).attr('id').split('-')[2];
+          var fileExt = $(this).attr('id').split('-')[3];
+
           console.log('File ID: ' + fotoID);
-          console.log('Filename: ' + fileNameExt);
+          console.log('Filename: ' + fileName);
+          console.log('FileExt: ' + fileExt);
           console.log('divID: ' + divID);
 
           var url = "http://localhost/guiafacil/ImageUploader/deleteImage";
 
           var callbackSuccess = function(divID){
+            /*$.notifySetup({
+              sound: 'audio/notify.wav' // Validar em um navegador pelo menos. No Chrome funcionou...
+            });*/
             $.notify("Imagem removida com sucesso", "success");
             $(divID).hide("slow"); //ATENÇÃO COM OS SELETORES: #MEU_ID.CONTINUACAO_DO_NOME É INTERPRETADO COM #id E .CLASSE
           }
@@ -46,15 +72,51 @@ $(document).ready(function(){
           $.ajax({
             type: "POST",
             url: url,
-            data: {
+            data: { // parâmetros do tipo POST
               'fotoID': fotoID,
-              'fileNameExt': fileNameExt
+              'fileName': fileName,
+              'fileExt': fileExt
             },
             cache: false,
             success: callbackSuccess(divID),
             error: function(xhr, status, error){$.notify("Não foi possível remover a imagem. Tente novamente.", "error")}
           });
         });
+  });
+
+  $('.button-update-title').map(function(){
+    $(this).click(function(e){
+      e.preventDefault();
+
+      var id = $(this).attr('id');
+      var url = "http://localhost/guiafacil/ImageUploader/updateTitleImage";
+      var fotoID = $(this).attr('id').split('-')[1];
+      var fileName = $(this).attr('id').split('-')[2];
+      var fileExt = $(this).attr('id').split('-')[3];
+      var titulo = $("#input"+id).val();
+
+      console.log('ID: ' + id);
+      console.log('File ID: ' + fotoID);
+      console.log('Filename: ' + fileName);
+      console.log('FileExt: ' + fileExt);
+      console.log('Título: ' + titulo);
+
+      var callbackSuccess = function(fotoID){
+        $.notify("Título alterado com sucesso", "success");
+      }
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        data:{
+          'fotoID': fotoID,
+          'titulo': titulo
+        },
+        cache: false,
+        success: callbackSuccess(fotoID),
+        error: function(xhr, status, error){$.notify("Não foi possível alterar o título da imagem. Tente novamente.", "error")}
+      });
+    });
   });
 });
 </script>

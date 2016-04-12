@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <meta charset="utf-8">
+        <!-- <meta charset="utf-8"> -->
+        <meta http-equiv="content-type" charset="utf-8">
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{SITE_DESCRIPTION}">
         <meta name="keywords" content="{SITE_KEYWORDS}">
@@ -13,8 +15,17 @@
         <link href="{BASEURI}/assets/vendor/fakeinput/fakeinput.css" rel="stylesheet" type="text/css">
         <script src="{SITE_TEMPLATE}/js/jquery.js"></script>
         <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
+
+        <!-- Zima Cagando -->
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.carousel.css'>
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/owl.theme.css'>
+        <script src="{SITE_TEMPLATE}/js/owl.carousel.min.js"></script>
         <script src="{SITE_TEMPLATE}/js/notify.js"></script>
         <script src="{SITE_TEMPLATE}/js/dropzone.js"></script>
+        <!-- <script src="{SITE_TEMPLATE}/js/jquery.notify.js"></script> -->
+        <!-- Zima Cagando -->
+
+
         <!--[if lt IE 9]>
         <script src="assets/js/html5shiv.js"></script>
         <script src="assets/js/respond.min.js"></script>
@@ -212,6 +223,7 @@
         </div>
 
         <?php require_once 'rodape.phtml'; ?>
+
         <script type="text/javascript">
             $(function () {
                 $('#top-menu-cadastro').addClass('active');
@@ -254,6 +266,12 @@
                             .appendTo($('#div-pass'));
                 }
                 );
+            });
+
+            $("#owl-carousel-footer").owlCarousel({
+                autoPlay: 3000, //Set AutoPlay to 3 seconds
+                items: 4,
+                pagination: true
             });
         </script>
         <script src="{BASEURI}/assets/vendor/jquery.mask.min.js" type="text/javascript"></script>

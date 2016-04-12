@@ -38,6 +38,11 @@ class DB {
 
             # instancia e retorna objeto
             $this->link = mysqli_connect("$this->host", "$this->user", "$this->pass", "$this->dbname") or die(@mysqli_connect_error($this->link));
+            mysql_query("SET NAMES 'utf8'");
+            mysql_query('SET character_set_connection=utf8');
+            mysql_query('SET character_set_client=utf8');
+            mysql_query('SET character_set_results=utf8');
+
             $this->url = $_SERVER['SCRIPT_NAME'];
             return $this->link;
         } catch (Exception $e) {

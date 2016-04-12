@@ -1,0 +1,28 @@
+﻿<div id="owl-carousel-footer" class="owl-carousel" style="border: 3px solid blue">
+  <?php
+
+    $homeSearch = new FiltroHomeSearch();
+    $clientesDestaqueFooter = $homeSearch->getClientesDestaqueFooter();
+
+    if(!empty($clientesDestaqueFooter)){
+      foreach($clientesDestaqueFooter as $k => $v) {
+
+          //$this->db->data[$k]->{'client_lat'} = $this->db->data[$k]->{'client_lat_lon'};
+          $lat_lon = json_decode ($clientesDestaqueFooter[$k]['cliente_lat_lon']);
+          $clientesDestaqueFooter[$k]['cliente_lat'] = $lat_lon->{'lat'};
+          $clientesDestaqueFooter[$k]['cliente_lon'] = $lat_lon->{'lon'};
+          //$clientesDestaqueFooter[$k]['cliente_nome'] = utf8_decode($clientesDestaqueFooter[$k]['cliente_nome']);
+          $clientesDestaqueFooter[$k]['cliente_nome'] = mb_convert_encoding($clientesDestaqueFooter[$k]['cliente_nome'], "UTF-8");
+          //$clientesDestaqueFooter[$k]['cliente_empresa'] = utf8_decode($clientesDestaqueFooter[$k]['cliente_empresa']);
+          $clientesDestaqueFooter[$k]['cliente_empresa'] = mb_convert_encoding($clientesDestaqueFooter[$k]['cliente_empresa'], "UTF-8");
+          unset($clientesDestaqueFooter[$k]['cliente_lat_lon']);
+
+
+          $nomeCliente = $clientesDestaqueFooter[$k]['cliente_nome'];
+          echo "<div class='item'><h4>$nomeCliente</h4></div>";
+      }
+    } else {
+      echo "<script>console.log('Select do banner footer não retornou nada. Verificar footercarousel_div.phtml, FiltroHomeSearch.php e index.phtml');</script>";
+    }
+  ?>
+</div>

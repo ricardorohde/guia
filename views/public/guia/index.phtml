@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <meta charset="utf-8">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="{SITE_DESCRIPTION}">
         <meta name="keywords" content="{SITE_KEYWORDS}">
@@ -28,8 +28,9 @@
     <body>
         <?php require_once 'top_bar.phtml'; ?>
         <?php require_once 'top_menu.phtml'; ?>
-        <?php require_once 'mapa.html' ?>;
+        <?php require_once 'mapa.html'; ?>
         <div class="container">
+
             <div class="row">
                 <div class="col-md-9">
                     <?php require_once 'top_busca.phtml'; ?>
@@ -232,7 +233,16 @@
                 <?php require_once 'right_bar.phtml'; ?>
             </div>
         </div>
+
+        <!-- Zima Cagando -->
+        <?php
+            require_once 'footercarousel_div.phtml';
+        ?>
+        <!-- Zima Cagando -->
+
         <?php require_once 'rodape.phtml'; ?>
+
+
 
         <script>
             if ($('.carousel').length >= 1) {
@@ -249,7 +259,16 @@
                 $('#top-menu-home').addClass('active');
                 $('[data-toggle="tooltip"]').tooltip();
             });
-            /*Zima Cagando*/
+
+            // Zima Cagando
+            $("#owl-carousel-footer").owlCarousel({
+                autoPlay: 2000, //Set AutoPlay to 3 seconds
+                items: 2,
+                pagination: true
+            });
+            // Zima Cagando
+
         </script>
+
     </body>
 </html>

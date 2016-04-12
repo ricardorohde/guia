@@ -97,7 +97,7 @@ class ImageUploader {
     // se não veio $produtoID passado por parâmetro no método então eu busco no $_POST (pode ser um AJAX)
     //!isset($produtoID) ? isset($_POST['produtoID']) ? $produtoID = $_POST['produtoID'] : 0;
 
-    $sql = "SELECT id, filename, fileext FROM z_produto_foto WHERE z_produto_id = :z_produto_id";
+    $sql = "SELECT id, titulo, filename, fileext FROM z_produto_foto WHERE z_produto_id = :z_produto_id";
 
     $stmt = $this->zimaconn->prepare($sql);
     $stmt->bindValue(':z_produto_id', $produtoID);
@@ -110,6 +110,7 @@ class ImageUploader {
         $images[] = array(
           'filename' => $row->filename,
           'fileext' => $row->fileext,
+          'titulo' => $row->titulo,
           'id' => $row->id
         );
       }
@@ -119,9 +120,9 @@ class ImageUploader {
 
   // Parâmetros: ID da imagem no banco e o nome do arquivo na pasta de upload vem por AJAX/POST
   public function deleteImage(){
-    if (isset($_POST['fotoID']) && isset($_POST['fileNameExt'])){
+    if (isset($_POST['fotoID']) && isset($_POST['fileName'])){
       $fotoID = $_POST['fotoID'];
-      $fileNameExt = $_POST['fileNameExt'];
+      $fileNameExt = $_POST['fileName'] . "." . $_POST['fileExt'];
 
       // se o arquivo existir na pasta, removo da pasta e do banco
       if (is_file($this->storeFolder.$this->ds.$fileNameExt)){
@@ -142,6 +143,20 @@ class ImageUploader {
     } else {
       header("HTTP/1.0 403 Forbidden");
     }
+  }
+
+  public function updateTitleImage(){
+    $fotoID = isset($_POST['fotoID']) ? $_POST['fotoID'] : 0;
+    $title = isset($_POST['titulo']) ? $_POST['titulo'] : 'sem_titulo';
+
+    $sql = 'UPDATE z_produto_foto SET titulo = :titulo WHERE id = :id';
+
+    $stmt = $this->zimaconn->prepare($sql);
+    $stmt->bindValue(':titulo', $title);
+    $stmt->bindValue(':id', $fotoID);
+
+    $deletedRows = $stmt->execute();
+    return $deletedRows > 0;
   }
 }
 ?>

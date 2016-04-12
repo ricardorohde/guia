@@ -1,3 +1,4 @@
+// Action disparada no click dos checkboxes que filtram o mapa
 function doFiltroHomeSearch(){
   var url = 'http://localhost/guiafacil/filtrohomesearch/getClientesPorCategoria';
   console.log("POST filtrohomeSearch: " + url);

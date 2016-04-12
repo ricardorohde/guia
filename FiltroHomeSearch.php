@@ -19,8 +19,6 @@ class FiltroHomeSearch {
     public $tpl;
 
     // constantes com as querys SQL - BEGIN
-    private static $ID_DESTAQUE_MAPA_HOME = 1;
-    private static $ID_DESTAQUE_FOOTER_HOME = 2;
 
     // *** Select retorna os clientes que tenham a categoria em destaque no MAPA da home ***
     // Ele busca também as clientes da categoria filha da categoria destaque
@@ -119,7 +117,7 @@ class FiltroHomeSearch {
 		        cliente_tipo_destaque t
     WHERE	  c.cliente_grupo = g.grupo_id
     AND		  c.cliente_id = t.cliente_id
-    AND		  t.tipo_destaque_id in  (1)";
+    AND		  t.tipo_destaque_id in  (1)"; // 1 = Mapa Home
 
     const QUERY_SELECT_CLIENTES_DESTAQUE_FOOTER_HOME = "
     SELECT	c.cliente_lat_lon,
@@ -137,13 +135,15 @@ class FiltroHomeSearch {
 		        cliente_tipo_destaque t
     WHERE	  c.cliente_grupo = g.grupo_id
     AND		  c.cliente_id = t.cliente_id
-    AND		  t.tipo_destaque_id in  (2)";
+    AND		  t.tipo_destaque_id in  (2)"; // 2 = Footer Home
     // constantes com as querys SQL - END
 
     public function __construct() {
         //conexao com banco
         $this->registry = Registry::getInstance();
-        $this->registry->set('db', new DB);
+        if ($this->registry->get('db') == null){
+          $this->registry->set('db', new DB);
+        }
         $this->db = $this->registry->get('db');
         //Verifica modulos que devem ser carregados
         $this->modulo = new ModuloModel($this->registry);
@@ -172,9 +172,6 @@ class FiltroHomeSearch {
     // Retorna todos os clientes das categorias selecionadas no filtro da página Home
     public function getClientesPorCategoria(){
       if (isset($_POST['checkvalues']) && !empty($_POST['checkvalues']) && count($_POST['checkvalues']) > 0) {
-        //$teste = $_POST['checkvalues'];
-        //echo "<script> console.log($teste); </script>";
-
         $checkvalues = json_decode($_POST['checkvalues']);
         $categorias = implode(",", $checkvalues); // 22,21,10,8,4 etc
       }
@@ -182,8 +179,6 @@ class FiltroHomeSearch {
       if(empty($categorias)){
         $categorias = 0;
       }
-
-      //echo "<script> console.log('$categorias'); </script>";
 
       $query = "SELECT  c.cliente_lat_lon,
                         c.cliente_id,
@@ -211,15 +206,12 @@ class FiltroHomeSearch {
       }
 
       $myData = count($this->db->data);
-//      echo "<script> console.log('count retorno banco = $myData'); </script>";
-      //die();
-      $return = $myData > 1 ? $this->db->toJson($this->db->data) : "";
-      //{'rs': [{'retorno': 'Retorno vazio do banco'}]}
+      $return = $myData > 0 ? $this->db->toJson($this->db->data) : "";
       echo $return;
     }
 
-    public function getClientesCategoriaDestaqueMapaHome(){
-      $this->db->query(QUERY_SELECT_CLIENTES_DESTAQUE_MAPA_HOME)->fetchAll();
+    public function getClientesDestaqueMapaHome(){
+      $this->db->query(self::QUERY_SELECT_CLIENTES_DESTAQUE_MAPA_HOME)->fetchAll();
 
       foreach($this->db->data as $k => $v) {
           //$this->db->data[$k]->{'client_lat'} = $this->db->data[$k]->{'client_lat_lon'};
@@ -233,6 +225,24 @@ class FiltroHomeSearch {
       //$this->db->data = (object) $this->db->data;
 
       echo $this->db->toJson($this->db->data);
+    }
+
+    public function getClientesDestaqueFooter(){
+      $this->db->query(self::QUERY_SELECT_CLIENTES_DESTAQUE_FOOTER_HOME)->fetchAll();
+
+      foreach($this->db->data as $k => $v) {
+          //$this->db->data[$k]->{'client_lat'} = $this->db->data[$k]->{'client_lat_lon'};
+          $lat_lon = json_decode ($this->db->data[$k]['cliente_lat_lon']);
+          $this->db->data[$k]['cliente_lat'] = $lat_lon->{'lat'};
+          $this->db->data[$k]['cliente_lon'] = $lat_lon->{'lon'};
+          $this->db->data[$k]['cliente_nome'] = utf8_decode($this->db->data[$k]['cliente_nome']);
+          $this->db->data[$k]['cliente_empresa'] = utf8_decode($this->db->data[$k]['cliente_empresa']);
+          unset($this->db->data[$k]['cliente_lat_lon']);
+      }
+      //$this->db->data = (object) $this->db->data;
+
+      //echo $this->db->toJson($this->db->data);
+      return count($this->db->data) > 0 ? $this->db->data : array();
     }
 
 
