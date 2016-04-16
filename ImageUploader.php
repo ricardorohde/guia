@@ -31,19 +31,35 @@ class ImageUploader {
      $this->storeFolder = 'assets'.$this->ds.'images'.$this->ds.'promo';
 
     // colocar esse trecho de código em algum lugar que seja executado só uma vez
-    $conn = new PDO(
+    /*$conn = new PDO(
       'mysql:host=localhost;port=3306;dbname=guiafacil',
       'root',
       ''
     );
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     $zimaRegistry = ZimaRegistry::getInstance();
-    $zimaRegistry->set('zimaconnection', $conn);
+    $zimaRegistry->set('zimaconnection', $conn);*/
     // colocar esse trecho de código em algum lugar que seja executado só uma vez
 
     // apenas esse trecho permanece no construtor
+    //$zimaRegistry = ZimaRegistry::getInstance();
+    //$this->zimaconn = $zimaRegistry->get('zimaconnection');
+
     $zimaRegistry = ZimaRegistry::getInstance();
-    $this->zimaconn = $zimaRegistry->get('zimaconnection');
+    if ($zimaRegistry->get('zimaconnection') == null) {
+      $opcoes = array(
+          PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8'
+      );
+      $conn = new PDO(
+        'mysql:host=localhost;port=3306;dbname=guiafacil',
+        'root',
+        '',
+        $opcoes
+      );
+      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
+      $zimaRegistry->set('zimaconnection', $conn);
+    }
   }
 
   // Faz insert na tabela de fotos do produto

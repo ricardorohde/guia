@@ -17,7 +17,7 @@
                             <?php if (isset($this->modulo['cliente']['menu-right'])): ?>
                                 <?php foreach ($this->modulo['cliente']['menu-right'] as $s): ?>
                                     <a class="btn-block" href="{SITE_BASEURI}/encontre/em/<?= $s->grupo_url ?>/">
-                                        » <?= $s->grupo_nome ?></a>
+                                        » <?=  utf8_encode($s->grupo_nome) ?></a>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         <?php endif; ?>

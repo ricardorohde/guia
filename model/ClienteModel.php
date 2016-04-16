@@ -28,7 +28,7 @@ class ClienteModel {
         }
     }
 
-    //método destrutor 
+    //método destrutor
     public function __destruct() {
         /*
           $this->db->destroy();
@@ -37,7 +37,7 @@ class ClienteModel {
          */
     }
 
-    //método recupera dados do cliente  
+    //método recupera dados do cliente
     public function getCliente() {
         $this->db->query = "SELECT * FROM cliente INNER JOIN grupo ON (cliente_grupo = grupo_id) WHERE cliente_id = $this->cliente_id";
         $this->db->query()->fetchAll();
@@ -48,7 +48,7 @@ class ClienteModel {
         }
     }
 
-    //método recupera dados do cliente  
+    //método recupera dados do cliente
     public function getClienteBySlug() {
         $this->db->query = "SELECT * FROM cliente INNER JOIN grupo ON (cliente_grupo = grupo_id) WHERE cliente_url = '$this->cliente_url'";
         $this->db->query()->fetchAllObj();
@@ -60,7 +60,7 @@ class ClienteModel {
         }
     }
 
-    //método recupera dados do cliente  
+    //método recupera dados do cliente
     public function getClienteByCat() {
         $this->db->query = "SELECT * FROM cliente INNER JOIN grupo ON (cliente_grupo = grupo_id) WHERE cliente_categoria = '$this->cliente_categoria' AND cliente_status = 2";
         $this->db->query()->fetchAllObj();
@@ -72,7 +72,7 @@ class ClienteModel {
         }
     }
 
-    //método recupera dados do cliente  
+    //método recupera dados do cliente
     public function getClienteByCatSlug() {
         $this->db->query = "SELECT * FROM cliente INNER JOIN grupo ON (cliente_grupo = grupo_id) WHERE grupo_url = '$this->grupo_url'  AND cliente_status = 2 GROUP BY cliente_id";
         $this->db->query()->fetchAllObj();
@@ -84,7 +84,7 @@ class ClienteModel {
         }
     }
 
-    //método recupera todos os clientes  
+    //método recupera todos os clientes
     public function getClientes() {
         $this->db->query = "SELECT * FROM cliente INNER JOIN grupo ON (cliente_grupo = grupo_id) WHERE  cliente_status = 2  ORDER BY  cliente_tipo DESC, cliente_nome ASC";
         $this->db->query()->fetchAllObj();
@@ -111,7 +111,7 @@ class ClienteModel {
         }
     }
 
-    //método recupera todos os clientes  
+    //método recupera todos os clientes
     public function getClienteGrupo($limit = 10000000000) {
         $this->db->query = "SELECT * FROM grupo ORDER BY grupo_nome ASC, grupo_pos ASC LIMIT 0, $limit";
         $this->db->query()->fetchAllObj();
@@ -120,7 +120,7 @@ class ClienteModel {
         }
     }
 
-    //método recupera todos os clientes  
+    //método recupera todos os clientes
     public function getGrupoByLetter($l,$limit = 1000000000) {
         $this->db->query = "SELECT * FROM grupo WHERE grupo_url like'$l%' ORDER BY grupo_nome ASC LIMIT 0, $limit";
         $this->db->query()->fetchAllObj();
@@ -245,7 +245,7 @@ class ClienteModel {
             $this->cliente_lat_lon = $lat_lon['json'];
             Post::addIndex('cliente_lat_lon', $this->cliente_lat_lon);
         }
-        
+
 
         Post::addIndex('cliente_url', $this->cliente_url);
         if (Post::get('cliente_site')) {
@@ -330,7 +330,7 @@ class ClienteModel {
         //$mail->AddBCC("$m->smtp_bcc");
         $mail->AddAddress("$email");
         //$mail->AddBCC("$msg->contato_email");
-        //$mail->AddReplyTo("$msg->contato_email");        
+        //$mail->AddReplyTo("$msg->contato_email");
         $mail->Body = utf8_decode("<p>Olá, seu cadastro foi atualizado em nosso site: <br> Acesse em: $url</p>");
         if (@$mail->Send()) {
             return true;
@@ -338,7 +338,7 @@ class ClienteModel {
             //echo $mail->ErrorInfo;exit;
             return false;
         }
-    }    
+    }
 
     public function notificaCadastro($info) {
         $this->db->query = "SELECT * FROM smtp";
@@ -362,7 +362,7 @@ class ClienteModel {
         if($m->smtp_user != ""){
             $mail->AddAddress("$m->smtp_user");
             //$mail->AddBCC("$msg->contato_email");
-            //$mail->AddReplyTo("$msg->contato_email");        
+            //$mail->AddReplyTo("$msg->contato_email");
             $mail->Body = utf8_decode("<p>Nova empresa cadastrada [$info] aguardando moderação</p>");
             if (@$mail->Send()) {
                 return true;
@@ -371,7 +371,7 @@ class ClienteModel {
                 return false;
             }
         }
-    }  
+    }
 
 
 }

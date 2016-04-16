@@ -13,7 +13,7 @@ class ZimaRegistry {
 		if ($this->storage->offsetExists($key)){
 			return $this->storage->offsetGet($key);
 		} else {
-			throw new RuntimeException(sprintf('Não existe um registro para a chave %s', $key));
+			return false;
 		}
 	}
 

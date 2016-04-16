@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Autor: Rafael Clares <rafael@clares.com.br> 
+ * Autor: Rafael Clares <rafael@clares.com.br>
  * Web: www.phpstaff.com.br
  * Data: 08/2014
  */
@@ -30,7 +30,7 @@ class GrupoModel {
         }
     }
 
-    //método destrutor 
+    //método destrutor
     public function __destruct() {
         /*
           $this->db->destroy();
@@ -42,10 +42,25 @@ class GrupoModel {
     //método retorna todas as grupos
     public function getAllCategoria() {
         //seta a query que será utilizada na consulta
-        $this->db->query = "SELECT * FROM grupo ORDER BY grupo_nome ASC";
+        /*$this->db->query = "SELECT * FROM grupo ORDER BY grupo_nome ASC";
         //returna array de obj em db->data os dados da consulta
         $this->db->query()->fetchAllObj();
-        return $this->db->data;
+        return $this->db->data;*/
+
+        $sql = "SELECT * FROM grupo ORDER BY grupo_nome ASC";
+        $this->db->query($sql)->fetchAll();
+
+        foreach($this->db->data as $k => $v){
+            //$this->db->data[$k]->{'client_lat'} = $this->db->data[$k]->{'client_lat_lon'};
+            $lat_lon = json_decode ($this->db->data[$k]['cliente_lat_lon']);
+            $this->db->data[$k]['cliente_lat'] = $lat_lon->{'lat'};
+            $this->db->data[$k]['cliente_lon'] = $lat_lon->{'lon'};
+            $this->db->data[$k]['cliente_nome'] = utf8_encode($this->db->data[$k]['cliente_nome']);
+            $this->db->data[$k]['cliente_empresa'] = utf8_encode($this->db->data[$k]['cliente_empresa']);
+            unset($this->db->data[$k]['cliente_lat_lon']);
+        }
+
+        //return $this->db->data;
     }
 
     //método atualiza registro vindo do fomulário grupo_editar do método editar()

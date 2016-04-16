@@ -16,9 +16,9 @@
         <script src="{SITE_TEMPLATE}/js/bootstrap.min.js"></script>
         <script src="{SITE_TEMPLATE}/js/owl.carousel.min.js"></script>
 
-        <!-- Zima Cagando -->
-        <!-- <script src="{SITE_TEMPLATE}/js/FiltroHomeSearch.js" ></script> -->
-        <!-- Zima Cagando -->
+        <!-- Usado no top_busca.phtml -->
+        <link rel='stylesheet' type='text/css' href='{SITE_TEMPLATE}/css/jquery.typeahead.css'>
+        <script src="{SITE_TEMPLATE}/js/jquery.typeahead.js"></script>
 
         <!--[if lt IE 9]>
         <script src="assets/js/html5shiv.js"></script>
@@ -33,7 +33,11 @@
 
             <div class="row">
                 <div class="col-md-9">
-                    <?php require_once 'top_busca.phtml'; ?>
+                    <!-- <?php // require_once 'top_busca.phtml'; ?> -->
+
+                    <!-- Zima Cagando -->
+                    <?php require_once 'top_busca_typeahead.phtml' ?>
+
                     <div class="main_content">
 
 
@@ -196,13 +200,16 @@
                         <!-- Zima Cagando -->
                         <div class="row">
                             <div class="col-md-7">
-                                <?php if (isset($this->modulo['filtrohome']['filtrohome-data'])){
-                                    foreach ($this->modulo['filtrohome']['filtrohome-data'] as $myFilter){
+                                <?php
+                                    $homeSearch = new FiltroHomeSearch();
+                                    $filtroCategorias = $homeSearch->getCategoriasPrincipais();
 
-                                          $value = $myFilter->grupo_id; //propriedade value do input
-                                          $name = $myFilter->grupo_url; //propriedade name do input
-                                          $id = $myFilter->grupo_url; //propriedade id do input
-                                          $description = substr($myFilter->grupo_nome,0,30); //label do input
+                                    foreach ($filtroCategorias as $myFilter){
+
+                                          $value = $myFilter['grupo_id']; //propriedade value do input
+                                          $name = $myFilter['grupo_url']; //propriedade name do input
+                                          $id = $myFilter['grupo_url']; //propriedade id do input
+                                          $description = substr($myFilter ['grupo_nome'],0,30); //label do input
                                           $checked = "checked"; //default todos os checkboxs checados
                                           $searchClass = "filtrohome-search-class"; // para pegar todos os inputs via jQuery com essa classe
                                           // e passar como parâmetro pro método AJAX que faz a filtragem
@@ -223,7 +230,7 @@
                                           // joga na tela
                                           echo $input;
                                     }
-                                } ?>
+                                ?>
                             </div>
                         </div>
                         <!-- Zima Cagando -->

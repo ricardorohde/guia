@@ -54,7 +54,7 @@ function addMarker(p) {
     var marker = map.addMarker({
         lat: p.cliente_lat,
         lng: p.cliente_lon,
-        icon: "assets/images/icons/marker.png", //+p.grupo_icone, // valor da coluna que vem lá do banco ;)
+        icon: "assets/images/icons/"+p.grupo_icone, // valor da coluna que vem lá do banco ;)
         id: p.cliente_id,
         title: p.cliente_nome,
         content: htmlr,

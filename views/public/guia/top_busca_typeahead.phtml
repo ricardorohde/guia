@@ -1,0 +1,105 @@
+<form id="form-country_v1" name="form-country_v1">
+    <div class="typeahead__container">
+        <div class="typeahead__field">
+
+            <span class="typeahead__query">
+                <input class="js-typeahead-country_v1" name="country_v1[query]" placeholder="Search" autocomplete="off" type="search" autofocus>
+            </span>
+            <span class="typeahead__button">
+                <button type="submit">
+                    <i class="typeahead__search-icon"></i>
+                </button>
+            </span>
+
+        </div>
+    </div>
+</form>
+
+<script>
+$(document).ready(function(){
+  var urlAjax = 'http://localhost/guiafacil/filtrohomesearch/getTodosClientesAjax';
+
+  $.typeahead({
+    input: ".js-typeahead-country_v1",
+
+    source: {
+        clientes: {
+          url: urlAjax
+        }
+    },
+
+    cache: true,
+
+    // para exibir resultados assim que a página é carregada
+    // para isso acontecer o input html tem que ter o atributo autofocus=true
+    searchOnFocus: true,
+
+    //generateOnLoad: true,
+
+    // Quantidade de caracter digitada necessária pra filtragem começar
+    // minLength combinado com searchOnFocus faz a pesquisa ser automática
+    minLength: 0,
+
+    accent: true,
+
+    // quantidade de item a ser exibido. 0 = TODOS
+    maxItem: 0,
+
+    // teoricamente é pra destacar tanto o item da lista quanto o item do filtro (categoria no caso)
+    highlight: "any",
+
+    // Quando setado apenas display ele mostra os campos do array display
+    // Esses campos são usados na filtragem também
+    display: ["cliente_empresa", "cliente_nome", "categoria_url"], // adicionar depois: tags, meta-tags, subcategorias
+
+    // lookup de agrupamento por categoria
+    group: {
+      key: "categoria_nome",
+      template: function(item){
+        var categoriaNome = item.categoria_nome;
+        var categoriaIcone = item.categoria_icone;
+
+        var htmlIcone = categoriaNome + ' <span class="team-logo">' +
+            '<img src="' + baseUri + '/assets/images/icons/'+ categoriaIcone + '">' +
+        '</span>';
+
+        return htmlIcone;
+      }
+    },
+
+    // Quando setado template ele exibe os itens da lista conforme o HTML+CSS do template
+    // Atributos do JSON estão disponíveis através do {{}}
+    template: '<span>' +
+        '<span class="name">{{cliente_empresa}}</span>' +
+        '<span class="division"> Contato: {{categoria_url}} </span>' +
+        '<span class="team-logo">' +
+            //'<img src="' + baseUri + '/assets/images/icons/">' +
+        '</span>' +
+    '</span>',
+
+    correlativeTemplate: true,
+
+    // template = html+CSS
+    // all = html+CSS
+    dropdownFilter: [{
+        key: 'categoria_nome', //filtrar por esse campo
+        template: '<strong>{{categoria_nome}}</strong>',
+        all: '<i>Todas as categorias</i>'
+    }],
+
+    callback: {
+        onInit: function (node) {
+            console.log('Typeahead Initiated on ' + node.selector);
+        },
+
+        onClick: function(node, a, item, event){
+          event.preventDefault();
+          console.log(JSON.stringify(item));
+          window.location.href = baseUri+'/encontre/'+item.categoria_url+'/'+item.cliente_url;
+        }
+    }
+  });
+
+  $('.js-typeahead-country_v1').focus();
+});
+</script>
