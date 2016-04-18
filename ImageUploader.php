@@ -27,23 +27,8 @@ class ImageUploader {
   private $storeFolder;
 
   public function __construct(){
-     $this->ds = DIRECTORY_SEPARATOR;
-     $this->storeFolder = 'assets'.$this->ds.'images'.$this->ds.'promo';
-
-    // colocar esse trecho de código em algum lugar que seja executado só uma vez
-    /*$conn = new PDO(
-      'mysql:host=localhost;port=3306;dbname=guiafacil',
-      'root',
-      ''
-    );
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-    $zimaRegistry = ZimaRegistry::getInstance();
-    $zimaRegistry->set('zimaconnection', $conn);*/
-    // colocar esse trecho de código em algum lugar que seja executado só uma vez
-
-    // apenas esse trecho permanece no construtor
-    //$zimaRegistry = ZimaRegistry::getInstance();
-    //$this->zimaconn = $zimaRegistry->get('zimaconnection');
+    $this->ds = DIRECTORY_SEPARATOR;
+    $this->storeFolder = 'assets'.$this->ds.'images'.$this->ds.'promo';
 
     $zimaRegistry = ZimaRegistry::getInstance();
     if ($zimaRegistry->get('zimaconnection') == null) {
@@ -59,6 +44,9 @@ class ImageUploader {
       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
       $zimaRegistry->set('zimaconnection', $conn);
+      $this->zimaconn = $zimaRegistry->get('zimaconnection');
+    } else {
+      $this->zimaconn = $zimaRegistry->get('zimaconnection');
     }
   }
 
@@ -84,7 +72,6 @@ class ImageUploader {
     }
 
   public function doImageUpload(){
-    echo "<script> console.log(1111); </script>";
     if (!empty($_FILES)) {
         $tempFile = $_FILES['file']['tmp_name'];
         $targetPath = dirname( __FILE__ ) . $this->ds. $this->storeFolder . $this->ds;
@@ -110,9 +97,6 @@ class ImageUploader {
 
   // Retorna as imagens vinculadas ao produto (da Promoção) com ID informado
   public function getImagesByProduto($produtoID = 0){
-    // se não veio $produtoID passado por parâmetro no método então eu busco no $_POST (pode ser um AJAX)
-    //!isset($produtoID) ? isset($_POST['produtoID']) ? $produtoID = $_POST['produtoID'] : 0;
-
     $sql = "SELECT id, titulo, filename, fileext FROM z_produto_foto WHERE z_produto_id = :z_produto_id";
 
     $stmt = $this->zimaconn->prepare($sql);

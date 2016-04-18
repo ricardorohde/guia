@@ -145,15 +145,19 @@ class FiltroHomeSearch {
             c.cliente_empresa,
             c.cliente_url,
             c.cliente_fone,
+            c.cliente_bairro,
+            c.cliente_email,
             g.grupo_id as id_categoria,
             g.grupo_nome as nome_categoria,
             g.grupo_icone as icone_categoria,
             g.grupo_url as url_categoria,
-            g.grupo_pos as grupo_pos,
-            c.cliente_email
+            b.id as id_bairro,
+            b.nome as nome_bairro
     FROM	  cliente c,
-    		    grupo g
+    		    grupo g,
+            z_bairro b
     WHERE	  c.cliente_grupo = g.grupo_id
+    AND		b.id = c.bairro_id
     ORDER BY c.cliente_empresa ASC
     ";
 
@@ -161,6 +165,15 @@ class FiltroHomeSearch {
       SELECT  *
       FROM  grupo
       WHERE id_grupo_superior is NULL
+      ORDER BY grupo_nome
+    ";
+
+    const QUERY_SELECT_BAIRROS_PICARRAS = "
+      SELECT  id,
+              nome
+      FROM    z_bairro
+      WHERE   cidade_id = 2
+      ORDER BY nome;
     ";
     // constantes com as querys SQL - END
 
@@ -190,6 +203,9 @@ class FiltroHomeSearch {
           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
           $zimaRegistry->set('zimaconnection', $conn);
+          $this->zimaconn = $zimaRegistry->get('zimaconnection');
+        } else {
+          $this->zimaconn = $zimaRegistry->get('zimaconnection');
         }
     }
 
@@ -342,12 +358,16 @@ class FiltroHomeSearch {
         $json_array['cliente_empresa']= $rec['cliente_empresa'];
         $json_array['cliente_url']=$rec['cliente_url'];
         $json_array['cliente_fone']= $rec['cliente_fone'];
+        $json_array['cliente_email']= $rec['cliente_email'];
+
         $json_array['categoria_nome']=$rec['nome_categoria'];
         $json_array['categoria_icone']= $rec['icone_categoria'];
         $json_array['categoria_id']= $rec['id_categoria'];
         $json_array['categoria_url']= $rec['url_categoria'];
-        $json_array['categoria_pos']= $rec['grupo_pos'];
-        $json_array['cliente_email']= $rec['cliente_email'];
+
+        $json_array['nome_bairro']= $rec['nome_bairro'];
+        $json_array['id_bairro'] = $rec['id_bairro']; //para filtrar no typeahead com radiobutton "&id_bairro"
+        $json_array['is_categoria'] = array($rec['url_categoria'] => true); //para filtrar no typeahead com checkbox "|is_categoria.bares ..."
 
         //here pushing the values in to an array
         array_push($json_data,$json_array);
@@ -358,5 +378,54 @@ class FiltroHomeSearch {
       echo $v;
     }
 
+    public function getBairrosPicarras(){
+      $stmt = $this->zimaconn->prepare(self::QUERY_SELECT_BAIRROS_PICARRAS);
+      $stmt->execute();
 
+      return $stmt;
+    }
+
+    public function createRadioButtonBairro($myFilter){
+      $value = $myFilter['id'];
+      $id = 'bairro'.$myFilter['id']; //propriedade id do input
+      $description = substr($myFilter ['nome'],0,30); //label do input
+      $searchClass = "radiobutton-bairro-search-typeahead-class"; // para pegar todos os inputs via jQuery com essa classe
+
+      // monta o input HTML baseado no retorno do banco
+      $input = "<span>";
+      $input .= "<input type='radio' ";
+      $input.= " id='$id' ";
+      $input.= " name='radiobutton-bairro' ";
+      //$input.= " checked='$checked' ";
+      $input.= " class='$searchClass'";
+      $input.= " value='$value'>";
+      $input.= "<label for='$id'>". $description ."</label>";
+      $input.= "</span>";
+
+      // joga na tela
+      return $input;
+    }
+
+    public function createCheckboxCategoria($myFilter){
+            $value = $myFilter['grupo_nome']; //nesse caso o "ID" é o nome, assim o typeahead pode filtrar a string
+            $name = $myFilter['grupo_url']; //propriedade name do input
+            $id = $myFilter['grupo_url']; //propriedade id do input
+            $description = substr($myFilter ['grupo_nome'],0,30); //label do input
+            $checked = "checked"; //default todos os checkboxs checados
+            $searchClass = "checkbox-search-typeahead-class"; // para pegar todos os inputs via jQuery com essa classe
+
+            // monta o input HTML baseado no retorno do banco
+            $input = "<span>";
+            $input .= "<input type='checkbox' ";
+            $input.= " id='$id' ";
+            $input.= " checked='$checked' ";
+            $input.= " class='$searchClass' />";
+            $input.= " $description ";
+            $input.= "</span>";
+
+            //$input.= "</input>";
+
+            // joga na tela
+            return $input;
+    }
 }

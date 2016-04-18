@@ -1,7 +1,31 @@
 <form id="form-country_v1" name="form-country_v1">
-    <div class="typeahead__container">
-        <div class="typeahead__field">
 
+    <?php
+      // FILTRO DE CATEGORIA
+      $homeSearch = new FiltroHomeSearch();
+      $filtroCategorias = $homeSearch->getCategoriasPrincipais();
+      echo "<span> <input type='checkbox' id='checkbox-categoria-selectall' name='checkbox-categoria-selectall' checked> <label id='label-checkbox-categoria-selectall'>Limpar selecionados</label> </span>";
+      foreach ($filtroCategorias as $myFilter) {
+
+        // monta o input do tipo checkbox
+        $checkboxCategoria = $homeSearch->createCheckboxCategoria($myFilter);
+        echo $checkboxCategoria;
+      }
+
+      // FILTRO POR BAIRRO
+      $bairros = $homeSearch->getBairrosPicarras();
+      // radiobutton para trazer todos os bairros no filtro
+      echo "<span> <input name='radiobutton-bairro' type='radio' id='radiobutton-bairro-todos' value='' checked> <label for='radiobutton-bairro-todos'>Todos</label> </span>";
+      foreach ($bairros as $myFilter){
+
+        // monta o input do tipo radiobutton
+        $checkboxBairro = $homeSearch->createRadioButtonBairro($myFilter);
+        echo $checkboxBairro;
+      }
+    ?>
+    <div class="typeahead__container">
+
+        <div class="typeahead__field">
             <span class="typeahead__query">
                 <input class="js-typeahead-country_v1" name="country_v1[query]" placeholder="Search" autocomplete="off" type="search" autofocus>
             </span>
@@ -10,17 +34,50 @@
                     <i class="typeahead__search-icon"></i>
                 </button>
             </span>
-
+        </div>
+        <div id="result-typeahead">
         </div>
     </div>
+
 </form>
 
 <script>
 $(document).ready(function(){
   var urlAjax = 'http://localhost/guiafacil/filtrohomesearch/getTodosClientesAjax';
 
+  $('#checkbox-categoria-selectall').on('click', function(){
+    if($(this).is(':checked')){
+      $('#label-checkbox-categoria-selectall').empty();
+      $("#label-checkbox-categoria-selectall").append("Limpar selecionados");
+
+      $(".checkbox-search-typeahead-class").map(function(){
+        if (!$(this).is(':checked')) $(this).trigger("click");
+      });
+    } else {
+      $('#label-checkbox-categoria-selectall').empty();
+      $("#label-checkbox-categoria-selectall").append("Selecionar todos");
+
+      $(".checkbox-search-typeahead-class").map(function(){
+        if ($(this).is(':checked')) $(this).trigger("click");
+      });
+    }
+  });
+
+  // monta o array para os filtros dinâmicos de CATEGORIA
+  var dynamicFilterArray = [];
+  $(".checkbox-search-typeahead-class").map(function(){
+    var idCheckbox = $(this).attr('id');
+    dynamicFilterArray.push({selector: '#'+idCheckbox, key: '|is_categoria.'+idCheckbox});
+  });
+
+// monta o array para os filtros dinâmicos de BAIRRO
+$(".radiobutton-bairro-search-typeahead-class").map(function(){
+  dynamicFilterArray.push({selector: '[name="radiobutton-bairro"]', key: '&id_bairro'});
+});
+
   $.typeahead({
     input: ".js-typeahead-country_v1",
+    debug: true,
 
     source: {
         clientes: {
@@ -28,38 +85,42 @@ $(document).ready(function(){
         }
     },
 
-    cache: true,
+    //DESATIVAR ESSA PORRA PORQUE SE NÃO O RETORNO DO AJAX NÃO REFLETE NO SOURCE DO TYPEAHEAD
+    //LIBERAR O CACHE SOMENTE QUANDO FOR PRODUÇÃO
+    //cache: true,
+
+    resultContainer: "#result-typeahead",
 
     // para exibir resultados assim que a página é carregada
-    // para isso acontecer o input html tem que ter o atributo autofocus=true
+    // para isso acontecer o input html tem que receber o foco
     searchOnFocus: true,
-
-    //generateOnLoad: true,
 
     // Quantidade de caracter digitada necessária pra filtragem começar
     // minLength combinado com searchOnFocus faz a pesquisa ser automática
     minLength: 0,
 
+    // para ignorar acentuação na filtragem
     accent: true,
 
     // quantidade de item a ser exibido. 0 = TODOS
     maxItem: 0,
 
-    // teoricamente é pra destacar tanto o item da lista quanto o item do filtro (categoria no caso)
+    // teoricamente é pra destacar (colocar bold conforme vai dando match na string) tanto o item da lista quanto o item do filtro (categoria no caso)
     highlight: "any",
 
     // Quando setado apenas display ele mostra os campos do array display
     // Esses campos são usados na filtragem também
     display: ["cliente_empresa", "cliente_nome", "categoria_url"], // adicionar depois: tags, meta-tags, subcategorias
 
-    // lookup de agrupamento por categoria
+    // item da lista agrupamento por categoria
     group: {
       key: "categoria_nome",
       template: function(item){
         var categoriaNome = item.categoria_nome;
         var categoriaIcone = item.categoria_icone;
+        var categoriaUrl = item.nome_bairro;
 
-        var htmlIcone = categoriaNome + ' <span class="team-logo">' +
+        var htmlIcone = categoriaNome + ' <span class="team-logo"> <span class="categoria-count"></span>' +
             '<img src="' + baseUri + '/assets/images/icons/'+ categoriaIcone + '">' +
         '</span>';
 
@@ -69,23 +130,23 @@ $(document).ready(function(){
 
     // Quando setado template ele exibe os itens da lista conforme o HTML+CSS do template
     // Atributos do JSON estão disponíveis através do {{}}
-    template: '<span>' +
-        '<span class="name">{{cliente_empresa}}</span>' +
-        '<span class="division"> Contato: {{categoria_url}} </span>' +
-        '<span class="team-logo">' +
-            //'<img src="' + baseUri + '/assets/images/icons/">' +
-        '</span>' +
-    '</span>',
+    template: function(){
 
-    correlativeTemplate: true,
+      var htmlTemplate = '<span>' +
+          '<span class="name"><b>{{cliente_empresa}}</b> (Bairro {{nome_bairro}})</span>' +
+          '<span class="division"> Fone: {{cliente_fone}} Email: {{cliente_email}} </span>' +
+          '<span class="team-logo">' +
+              //'<img src="' + baseUri + '/assets/images/icons/">' +
+          '</span>' +
+      '</span>';
 
-    // template = html+CSS
-    // all = html+CSS
-    dropdownFilter: [{
-        key: 'categoria_nome', //filtrar por esse campo
-        template: '<strong>{{categoria_nome}}</strong>',
-        all: '<i>Todas as categorias</i>'
-    }],
+      return htmlTemplate;
+    },
+
+    //correlativeTemplate: true,
+
+    dynamicFilter: dynamicFilterArray,
+    //{selector: '[name="radiobutton-bairro"]', key: '&id_bairro'},
 
     callback: {
         onInit: function (node) {

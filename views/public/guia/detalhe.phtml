@@ -33,10 +33,10 @@
                         <?php if ($this->isMod('cliente')): ?>
                             <?php if (isset($this->data['cliente']->{'cliente_nome'})): ?>
                                 <div class="detail-product">
-                                    <h3 class="title"><?= $this->data['cliente']->{'cliente_empresa'} ?> - <?= $this->data['cliente']->{'cliente_nome'} ?></h3>
+                                    <h3 class="title"><?= utf8_encode($this->data['cliente']->{'cliente_empresa'}) ?> - <?= utf8_encode($this->data['cliente']->{'cliente_nome'}) ?></h3>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <img src="{SITE_BASEURI}/thumb.php?zc=2&h=200&w=250&src=<?= Imagem:: get("midia/cliente", $this->data['cliente']->{'cliente_logo'}) ?>" alt="logo - <?= $this->data['cliente']->{'cliente_nome'} ?>" class="img-responsive">
+                                            <img src="{SITE_BASEURI}/thumb.php?zc=2&h=200&w=250&src=<?= Imagem:: get("midia/cliente", $this->data['cliente']->{'cliente_logo'}) ?>" alt="logo - <?= utf8_encode($this->data['cliente']->{'cliente_nome'}) ?>" class="img-responsive">
                                         </div>
                                         <div class="col-md-8">
                                             <h3 class="title no-margin-t">CONTATO</h3>

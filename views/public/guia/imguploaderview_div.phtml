@@ -4,6 +4,7 @@
       $imageUploader = new ImageUploader();
 
       $fotos = $imageUploader->getImagesByProduto(2);
+      //$fotos = array();
       $idInputHelper = 0;
 
       if (!empty($fotos) && count($fotos) > 0){
@@ -62,9 +63,6 @@ $(document).ready(function(){
           var url = "http://localhost/guiafacil/ImageUploader/deleteImage";
 
           var callbackSuccess = function(divID){
-            /*$.notifySetup({
-              sound: 'audio/notify.wav' // Validar em um navegador pelo menos. No Chrome funcionou...
-            });*/
             $.notify("Imagem removida com sucesso", "success");
             $(divID).hide("slow"); //ATENÇÃO COM OS SELETORES: #MEU_ID.CONTINUACAO_DO_NOME É INTERPRETADO COM #id E .CLASSE
           }
